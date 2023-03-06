@@ -1,0 +1,20 @@
+{
+  "name": "api-alert_user_sap",
+  "version": "1.0.0",
+  "description": "Gestión de alertas de usuarios en SAP B1",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EdwinF01011/API-alert_user_sap.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EdwinF01011/API-alert_user_sap/issues"
+  },
+  "homepage": "https://github.com/EdwinF01011/API-alert_user_sap#readme"
+}
