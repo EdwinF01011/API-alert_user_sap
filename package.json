@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/EdwinF01011/API-alert_user_sap/issues"
   },
-  "homepage": "https://github.com/EdwinF01011/API-alert_user_sap#readme"
+  "homepage": "https://github.com/EdwinF01011/API-alert_user_sap#readme",
+  "dependencies": {
+    "node-fetch": "^3.3.0",
+    "nodemon": "^2.0.21"
+  }
 }
