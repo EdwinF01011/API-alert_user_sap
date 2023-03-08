@@ -21,7 +21,10 @@ const httpsAgent = new https.Agent({
 
 //  #CONSTANTES & VARIABLES         --------------------
 var alerts;
+var sesion;
 const urlLogin = 'https://192.168.10.201:50000/b1s/v1/Login';
+const urlAlertUser = 'https://192.168.10.201:50000/b1s/v1/AlertManagements(138)'
+
 var login={
     "CompanyDB": "PRUEBAS_ENERO",
     "Password": "Milan2023*",
@@ -37,18 +40,34 @@ var request = new Request(urlLogin, {
 
 //  #METHODS        --------------------
 
+// app.get("/",(res,req))
 
-//Post login service layer
-fetch(urlLogin,{
+app.get("/login", (req,res) => {
+
+    //Post login service layer
+    fetch(urlLogin,{
 	method: 'POST',
     headers: new Headers(),
 	body: JSON.stringify(login),
     agent:httpsAgent
-}).then((respuesta) => {return(respuesta.json())
+    }).then((respuesta) => {return(respuesta.json())
         }).then((resp) => {
-            alerts= resp;
-            console.log(resp);
+            sesion= resp;
+            //console.log(resp);
         }).catch( err => console.log( err + "  "+ "catch...."));
+
+
+    res.send(sesion);
+    //res.send( '<img src="' +   alerts['sprites']['versions']['generation-i']['red-blue']['back_default'] + '">'  );
+})
+
+
+// fetch(urlAlertUser).then((respuesta) => {
+//     return(respuesta.json())
+// }).then((resp)=>{
+//     console.log(resp);
+// })
+
 
 
 // // fetch("https://pokeapi.co/api/v2/pokemon/ditto").then((respuesta) => {
@@ -66,10 +85,7 @@ fetch(urlLogin,{
 //         }).catch( err => console.log( err + "  "+ "error en la respuesta"));
 
 
-// app.get("/", (req,res) => {
-//     res.send("hola");
-//     //res.send( '<img src="' +   alerts['sprites']['versions']['generation-i']['red-blue']['back_default'] + '">'  );
-// })
+
 
 
 //-----------------------------------------
