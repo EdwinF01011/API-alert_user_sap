@@ -5,6 +5,7 @@ const app = express();
 app.listen(8080,()=>{
     console.log( "Server running  ＼(ﾟｰﾟ＼)" );
 })
+// process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
 //  #IMPORT FETCH HTTP     --------------------
 const fetchP = import('node-fetch').then(mod => mod.default)
@@ -15,7 +16,7 @@ const fetch = (...args) => fetchP.then(fn => fn(...args))
 //https://stackoverflow.com/questions/52478069/node-fetch-disable-ssl-verification
 const https = require('https');
 const httpsAgent = new https.Agent({
-    rejectUnauthorized: true,
+    rejectUnauthorized: false,
   });
 
 //  #CONSTANTES & VARIABLES         --------------------
@@ -35,10 +36,13 @@ var request = new Request(urlLogin, {
 });
 
 //  #METHODS        --------------------
+
+
+//Post login service layer
 fetch(urlLogin,{
 	method: 'POST',
     headers: new Headers(),
-	body: login,
+	body: JSON.stringify(login),
     agent:httpsAgent
 }).then((respuesta) => {return(respuesta.json())
         }).then((resp) => {
