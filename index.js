@@ -1,5 +1,6 @@
 
 //  #SERVIDOR       --------------------
+const { rejects } = require("assert");
 const express = require("express");
 const app = express();
 app.listen(8080, () => {
@@ -22,16 +23,19 @@ var login = {
 //  #TLS
 //https://stackoverflow.com/questions/52478069/node-fetch-disable-ssl-verification
 const https = require('https');
+const { resolve } = require("path");
 const httpsAgent = new https.Agent({
     rejectUnauthorized: false,
 });
 
 //  #CONSTANTES & VARIABLES         --------------------
 var alerts;
+var cokkieId;
 var sesion;
 const urlLogin = 'https://192.168.10.201:50000/b1s/v1/Login';
 const urlAlertUser = 'https://192.168.10.201:50000/b1s/v1/AlertManagements(138)'
 let alertas = {};
+let alertId = [];
 var request = new Request(urlLogin, {
     method: 'POST',
     body: login,
@@ -41,7 +45,7 @@ var request = new Request(urlLogin, {
 //  #METHODS        --------------------
 
 async function Reqlogin() {//Post login service layer
-    
+
     return await new Promise((resolve, reject) => {
         fetch(urlLogin, {
             method: 'POST',
@@ -58,7 +62,7 @@ async function Reqlogin() {//Post login service layer
 async function getAlert(options) {
     return await new Promise((resolve, reject) => {
 
-        fetch("https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLalertUser')/List?cedula='1144165930-0'",
+        fetch("https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLalertUser')/List?cedula='1144165930-0'",// <- usuario a tomar alertas
             options)
             .then((resp1) => {
                 console.log(">>>")
@@ -71,6 +75,27 @@ async function getAlert(options) {
     })
 }
 
+async function alertUser(options,alertId) {
+    return await new Promise((resolve, reject) => {
+
+        var uri = "https://192.168.10.201:50000/b1s/v1/AlertManagements("+alertId+")";
+        fetch(uri, options)
+            // .then((response) => response.json() )
+            .then((resp) => {
+                var data = resp;
+                if (data.status == 204) {
+                    return resolve({
+                        message: 'Alertas Asiganadas Correctamente'
+                    })
+                }
+            })
+            .catch((err) => {
+                console.log(err + " < - - error asignando alerta "+alertId);
+                return reject(err)
+            })
+    })
+}
+
 //      ROUTES        --------------------
 
 app.get("/alert", async (req, res0) => {
@@ -78,8 +103,8 @@ app.get("/alert", async (req, res0) => {
     await Reqlogin().then((res) => {
 
         console.log(res.SessionId);//cokkie
-        var cokkieId = "B1SESSION=" + res.SessionId;
-        var options= {
+        cokkieId = "B1SESSION=" + res.SessionId;
+        var options = {
             method: 'GET',
             headers: {
                 cookie: cokkieId,
@@ -95,11 +120,14 @@ app.get("/alert", async (req, res0) => {
         getAlert(options).then((res) => {
             alertas = res.value;
             console.log(alertas);
-
+            for (var i in alertas) {
+                alertId.push(alertas[i]['Code'])
+                // console.log(alertId[i] +'   <');
+            }
             // res0.json(alertas);
-            res0.send(alertas);
+            res0.send(alertId);
             // res0.send(printAlert(alertas));
-            
+
         }).catch(err => {
             alertas = err;
             console.log(err)
@@ -110,33 +138,36 @@ app.get("/alert", async (req, res0) => {
     // res0.send(alertas);
 });
 
-app.get("/alerts",(req,res)=>{
+app.get("/alerts", async (req, res) => {
 
-    var a=alertas;
+    var options = {
+        method: 'PATCH',
+        headers: {
+            cookie: cokkieId,
+            "Content-Type": "application/json"
 
-    console.log('..alerts');
-    console.log(a[1]['Code']  +'   <');
+        }
+        , agent: httpsAgent
+        , body: JSON.stringify({
+            "AlertManagementRecipients": [
+                {
+                    "UserCode": 491,
+                    "SendInternal": "tYES"
+                }
+            ]
+        })
+    }
+    var info;
+    for (var i in alertId){
 
-
-    
-    // for (var i in a[0]) {
-  
-    //     console.log(a[i]  +'for');
-    //   }
-
-
-    // res.send("el código de las alertas");
-
-    // var myVar = { typeA: '501', typeB: '502' };
-
-    // for (var key in myVar) {
-      
-    //   console.log(key);
-    //   console.log(myVar[key]);
-    // }     
-
+        console.log("alerta "+i+" asignada al usuario");
+        await alertUser(options,alertId[i])
+        .then((resp) => {
+            info=resp;
+        })
+    }
+    res.json(info);
 })
-
 
 
 // fetch(urlAlertUser).then((respuesta) => {
