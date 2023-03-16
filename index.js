@@ -1,6 +1,7 @@
 
 //  #SERVIDOR       --------------------
 const { rejects } = require("assert");
+const { Console } = require("console");
 const express = require("express");
 const app = express();
 app.listen(8080, () => {
@@ -31,7 +32,11 @@ const httpsAgent = new https.Agent({
 //  #CONSTANTES & VARIABLES         --------------------
 var alerts;
 var cokkieId;
-var sesion;
+var sesion={
+    SessionTimeout:0,
+    jornada:'',
+    cokkieId
+};
 const urlLogin = 'https://192.168.10.201:50000/b1s/v1/Login';
 const urlAlertUser = 'https://192.168.10.201:50000/b1s/v1/AlertManagements(138)'
 let alertas = {};
@@ -53,6 +58,10 @@ async function Reqlogin() {//Post login service layer
             body: JSON.stringify(login),
             agent: httpsAgent
         }).then((resp) => {
+
+            // var a= resp.text();
+            // console.log(a);
+
             return resolve(resp.json());
             // sesion= resp.SessionId;
         }).catch(err => { return reject(err) });
@@ -94,6 +103,26 @@ async function alertUser(options,alertId) {
                 return reject(err)
             })
     })
+}
+
+function createJson (session){
+
+    const fs = require('fs');
+
+    var jsonContent = JSON.stringify(session);
+
+    let i=0;
+    fs.writeFile("output.json", jsonContent, 'utf8', function (err) {
+        
+        if (err ) {
+            console.log("An error occured while writing JSON Object to File.");
+            return console.log(err);
+        }
+        // i =1;
+    
+        return true;
+    });
+
 }
 
 //      ROUTES        --------------------
@@ -170,12 +199,41 @@ app.get("/alerts", async (req, res) => {
 })
 
 
-// fetch(urlAlertUser).then((respuesta) => {
-//     return(respuesta.json())
-// }).then((resp)=>{
-//     console.log(resp);
-// })
+app.get("/json", async (req, res0) => {
 
+    // import data from './output.json'
+
+    fetch('./output.json').then((resp=>{
+        res0.send(resp)
+    }))
+
+
+
+
+    await Reqlogin().then((res) => {
+        
+        //tiempo
+        var fecha= new Date();
+        var time_end = (parseInt(fecha.toLocaleTimeString().charAt(0))+1).toString()+ fecha.getMinutes();
+        sesion.SessionTimeout = time_end;
+        sesion.cokkieId = res.SessionId;
+        sesion.jornada=fecha.toLocaleTimeString().charAt(8)+fecha.toLocaleTimeString().charAt(9)
+        createJson(sesion).then((resp)=>{
+            console.log(resp +' <<<<<<<<<')
+        }).catch((err=>{
+            console.error(err );
+        }))
+
+    }).catch((err) => { console.log(err) })
+
+    // res0.send(alertas);
+});
+
+
+
+
+
+//---------------------------------------------------------------------------------------------------------------------------
 
 
 // // fetch("https://pokeapi.co/api/v2/pokemon/ditto").then((respuesta) => {
@@ -191,40 +249,6 @@ app.get("/alerts", async (req, res) => {
 //             alerts= resp;
 //         console.log(resp);
 //         }).catch( err => console.log( err + "  "+ "error en la respuesta"));
-
-
-
-
-
-//-----------------------------------------
-
-//const url = 'https://randomuser.me/api';
-
-// let data1 = {
-//   name: 'Sara'
-// }
-
-// var request = new Request("https://randomuser.me/api", {
-// 	method: 'POST',
-// 	body: data1,
-// 	headers: new Headers()
-// });
-
-// fetch(request)
-// .then((respuesta)=> {
-//     // Handle response we get from the API
-//     console.log(respuesta.json());
-// }).catch( err => console.log( err +'   '+'jodidos' ));
-
-//-----------------------------------------
-
-
-
-
-
-
-
-
 
 
 
