@@ -9,6 +9,7 @@ app.listen(8080, () => {
 })
 // process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
+
 //  #IMPORT FETCH HTTP     --------------------
 const fetchP = import('node-fetch').then(mod => mod.default)
 const fetch = (...args) => fetchP.then(fn => fn(...args))
@@ -32,6 +33,8 @@ const httpsAgent = new https.Agent({
 });
 
 //  #CONSTANTES & VARIABLES         --------------------
+app.use(express.static("views"));//Permite el acceso a los archivos
+
 var alerts;
 var cokkieId;
 var fecha= new Date();
@@ -131,8 +134,16 @@ function createJson (session){
 
 app.get("/", (req,res)=>{
     // res.sendFile(path.resolve(__dirname,'./views/index.html'));
+
+    // res.push('./views/style.css');
     res.sendFile(path.join(__dirname,'./views/index.html'));
 })
+
+
+// app.get("/style.css", (req,res)=>{
+//     // res.sendFile(path.resolve(__dirname,'./views/index.html'));
+//     res.sendFile(path.join(__dirname,'./views/style.css'));
+// })
 
 app.get("/alert", async (req, res0) => {
 
