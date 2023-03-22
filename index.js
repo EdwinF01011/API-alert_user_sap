@@ -5,7 +5,7 @@ const { Console } = require("console");
 const express = require("express");
 const app = express();
 app.listen(8080, () => {
-    console.log("Server running                              ＼(ﾟｰﾟ＼)");
+    console.log("Server running 8080port                              ＼(ﾟｰﾟ＼)");
 })
 // process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
@@ -24,7 +24,9 @@ var login = {
 //  #TLS
 //https://stackoverflow.com/questions/52478069/node-fetch-disable-ssl-verification
 const https = require('https');
-const { resolve } = require("path");
+// const { resolve } = require("path");
+const path = require("path");
+
 const httpsAgent = new https.Agent({
     rejectUnauthorized: false,
 });
@@ -32,6 +34,7 @@ const httpsAgent = new https.Agent({
 //  #CONSTANTES & VARIABLES         --------------------
 var alerts;
 var cokkieId;
+var fecha= new Date();
 var sesion={
     SessionTimeout:0,
     jornada:'',
@@ -39,6 +42,8 @@ var sesion={
 };
 const urlLogin = 'https://192.168.10.201:50000/b1s/v1/Login';
 const urlAlertUser = 'https://192.168.10.201:50000/b1s/v1/AlertManagements(138)'
+const out = require('./output.json')
+
 let alertas = {};
 let alertId = [];
 var request = new Request(urlLogin, {
@@ -71,7 +76,7 @@ async function Reqlogin() {//Post login service layer
 async function getAlert(options) {
     return await new Promise((resolve, reject) => {
 
-        fetch("https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLalertUser')/List?cedula='1144165930-0'",// <- usuario a tomar alertas
+        fetch("https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLalertUser')/List?cedula='1005331526'",// <- usuario a tomar alertas
             options)
             .then((resp1) => {
                 console.log(">>>")
@@ -111,21 +116,23 @@ function createJson (session){
 
     var jsonContent = JSON.stringify(session);
 
-    let i=0;
     fs.writeFile("output.json", jsonContent, 'utf8', function (err) {
         
         if (err ) {
             console.log("An error occured while writing JSON Object to File.");
             return console.log(err);
         }
-        // i =1;
-    
         return true;
     });
 
 }
 
 //      ROUTES        --------------------
+
+app.get("/", (req,res)=>{
+    // res.sendFile(path.resolve(__dirname,'./views/index.html'));
+    res.sendFile(path.join(__dirname,'./views/index.html'));
+})
 
 app.get("/alert", async (req, res0) => {
 
@@ -137,7 +144,8 @@ app.get("/alert", async (req, res0) => {
             method: 'GET',
             headers: {
                 cookie: cokkieId,
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Prefer' : 'odata.maxpagesize=0'
             }
             , agent: httpsAgent
             // ,agent:httpsAgent
@@ -180,7 +188,7 @@ app.get("/alerts", async (req, res) => {
         , body: JSON.stringify({
             "AlertManagementRecipients": [
                 {
-                    "UserCode": 491,
+                    "UserCode": 505,
                     "SendInternal": "tYES"
                 }
             ]
@@ -198,38 +206,105 @@ app.get("/alerts", async (req, res) => {
     res.json(info);
 })
 
-
 app.get("/json", async (req, res0) => {
 
-    // import data from './output.json'
+    //asigna un '0' a la izquierda cuando el formato de los minutos no contenga 2 dígitos    
+    var minut = ((fecha.getMinutes()).toString()).length > 1 ? (fecha.getMinutes()).toString() : '0'+(fecha.getMinutes()).toString();
+    var time = fecha.toLocaleTimeString().charAt(0) +minut;
+    var j=fecha.toLocaleTimeString().charAt(8)+fecha.toLocaleTimeString().charAt(9)
 
-    fetch('./output.json').then((resp=>{
-        res0.send(resp)
-    }))
+    if (time < out.SessionTimeout && j == out.jornada) {//
+        console.log('Sesión Activa')
+    }else{
+        await Reqlogin().then((res) => {
+    
+            //tiempo
+            var time_end = (parseInt(fecha.toLocaleTimeString().charAt(0))+1).toString()+ fecha.getMinutes();
+            sesion.SessionTimeout = time_end;
+            sesion.cokkieId = res.SessionId;
+            sesion.jornada=fecha.toLocaleTimeString().charAt(8)+fecha.toLocaleTimeString().charAt(9)
+    
+            createJson(sesion).then((resp)=>{//
+    
+            }).catch((err=>{
+                console.error(err );
+            }))
+    
+        }).catch((err) => { console.log(err) })
+    }
 
-
-
-
-    await Reqlogin().then((res) => {
+    // await Reqlogin().then((res) => {
         
-        //tiempo
-        var fecha= new Date();
-        var time_end = (parseInt(fecha.toLocaleTimeString().charAt(0))+1).toString()+ fecha.getMinutes();
-        sesion.SessionTimeout = time_end;
-        sesion.cokkieId = res.SessionId;
-        sesion.jornada=fecha.toLocaleTimeString().charAt(8)+fecha.toLocaleTimeString().charAt(9)
-        createJson(sesion).then((resp)=>{
-            console.log(resp +' <<<<<<<<<')
-        }).catch((err=>{
-            console.error(err );
-        }))
+    //     //tiempo
+    //     var time_end = (parseInt(fecha.toLocaleTimeString().charAt(0))+1).toString()+ fecha.getMinutes();
+    //     sesion.SessionTimeout = time_end;
+    //     sesion.cokkieId = res.SessionId;
+    //     sesion.jornada=fecha.toLocaleTimeString().charAt(8)+fecha.toLocaleTimeString().charAt(9)
 
-    }).catch((err) => { console.log(err) })
+    //     createJson(sesion).then((resp)=>{
+
+    //     }).catch((err=>{
+    //         console.error(err );
+    //     }))
+
+    // }).catch((err) => { console.log(err) })
 
     // res0.send(alertas);
 });
 
+app.get("/alertX", async (req, res0) => {
 
+     //asigna un '0' a la izquierda cuando el formato de los minutos no contenga 2 dígitos    
+    var minut = ((fecha.getMinutes()).toString()).length > 1 ? (fecha.getMinutes()).toString() : '0'+(fecha.getMinutes()).toString();
+    var time = fecha.toLocaleTimeString().charAt(0) +minut;
+    var j=fecha.toLocaleTimeString().charAt(8)+fecha.toLocaleTimeString().charAt(9)
+
+    console.log(time)
+
+    if (time < out.SessionTimeout || j == out.jornada) {//
+
+        console.log('Sesión closed')
+        
+    }else{
+
+        console.log('Creando nueva Sesión...')
+        var options = {
+            method: 'GET',
+            headers: {
+                cookie: "B1SESSION=" + out.cokkieId,
+                "Content-Type": "application/json"
+            }
+            , agent: httpsAgent
+            // ,agent:httpsAgent
+            // ,body: {ParamList:"cedula='1005331526'"}
+        }
+    
+        console.log('Enviando petición para las alertas')
+    
+        getAlert(options).then((res) => {
+            alertas = res.value;
+            console.log(alertas);
+            for (var i in alertas) {
+                alertId.push(alertas[i]['Code'])
+                // console.log(alertId[i] +'   <');
+            }
+            // res0.json(alertas);
+            res0.send(alertId);
+            // res0.send(printAlert(alertas));
+    
+        }).catch(err => {
+            alertas = err;
+            console.log(err)
+        });
+        
+    }
+
+    
+
+
+
+    // res0.send(alertas);
+});
 
 
 
@@ -274,6 +349,10 @@ app.get("/json", async (req, res0) => {
  * https://www.youtube.com/watch?v=G7Co4Tr0XN8&feature=youtu.be
  *
  * #Cross Join
+ * 
+ * 
+ * #path
+ * https://www.youtube.com/watch?v=7diQjDGdPWo
  *
  *
     */
