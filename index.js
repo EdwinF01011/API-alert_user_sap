@@ -21,6 +21,12 @@ var login = {
     "Password": "Milan2023*",
     "UserName": "1005331526"
 }
+// var login = {
+//     "CompanyDB": "MILANPROD",
+//     "Password": "Edwin2456*",
+//     "UserName": "1005331526"
+// }
+
 
 //  #TLS
 //https://stackoverflow.com/questions/52478069/node-fetch-disable-ssl-verification
@@ -33,8 +39,9 @@ const httpsAgent = new https.Agent({
 });
 
 //  #CONSTANTES & VARIABLES         --------------------
-app.use(express.static("views"));//Permite el acceso a los archivos de la carpeta
-app.use(express.static("controller"));//Permite el acceso a los archivos de la carpeta
+app.use(express.static(path.join(__dirname,"controller")));//Permite el acceso a los archivos de la carpeta
+app.use(express.static("public"));//Permite el acceso a los archivos de la carpeta
+
 
 
 var alerts;
@@ -82,6 +89,8 @@ async function getAlert(options) {
     return await new Promise((resolve, reject) => {
 
         fetch("https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLalertUser')/List?cedula='1005331526'",// <- usuario a tomar alertas
+        // fetch("https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLQueries0001')/List?cedula='MILAN33'",// <- usuario a tomar alertas
+
             options)
             .then((resp1) => {
                 console.log(">>>")
@@ -136,7 +145,7 @@ function createJson (session){
 
 app.get("/", (req,res)=>{
     // res.sendFile(path.resolve(__dirname,'./views/index.html'));
-    res.sendFile(path.join(__dirname,'./views/index.html'));
+    res.sendFile(path.join(__dirname,'./public/index.html'));
 })
 
 app.get("/alert", async (req, res0) => {
@@ -193,7 +202,7 @@ app.get("/alerts", async (req, res) => {
         , body: JSON.stringify({
             "AlertManagementRecipients": [
                 {
-                    "UserCode": 505,
+                    "UserCode": 248,
                     "SendInternal": "tYES"
                 }
             ]
@@ -266,13 +275,13 @@ app.get("/alertX", async (req, res0) => {
 
     console.log(time)
 
-    if (time < out.SessionTimeout || j == out.jornada) {//
+    if (time > out.SessionTimeout || j != out.jornada) {//
 
-        console.log('Sesión closed')
+        console.log('Sesión Closed')
         
     }else{
 
-        console.log('Creando nueva Sesión...')
+        console.log('Usando Sesión...')
         var options = {
             method: 'GET',
             headers: {
