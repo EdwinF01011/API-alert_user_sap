@@ -33,7 +33,9 @@ const httpsAgent = new https.Agent({
 });
 
 //  #CONSTANTES & VARIABLES         --------------------
-app.use(express.static("views"));//Permite el acceso a los archivos
+app.use(express.static("views"));//Permite el acceso a los archivos de la carpeta
+app.use(express.static("controller"));//Permite el acceso a los archivos de la carpeta
+
 
 var alerts;
 var cokkieId;
@@ -134,16 +136,8 @@ function createJson (session){
 
 app.get("/", (req,res)=>{
     // res.sendFile(path.resolve(__dirname,'./views/index.html'));
-
-    // res.push('./views/style.css');
     res.sendFile(path.join(__dirname,'./views/index.html'));
 })
-
-
-// app.get("/style.css", (req,res)=>{
-//     // res.sendFile(path.resolve(__dirname,'./views/index.html'));
-//     res.sendFile(path.join(__dirname,'./views/style.css'));
-// })
 
 app.get("/alert", async (req, res0) => {
 
