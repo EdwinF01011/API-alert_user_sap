@@ -1,0 +1,9 @@
+
+TO DO
+
+#ACTUALIZAR ALERTAS RECIBIENDO 2 PARAMÉTROS (CEDULAS)
+
+-Recibir y enviar los parámetros desde la vista, hacia el back
+
+#
+

@@ -49,6 +49,7 @@
     <br>
 
     <!-- <div class="pw"  id="p"><p >a</p></div> -->
+ 
     
     <div class="accordion accordion-flush" id="accordionFlushExample">
         <div class="accordion-item">
@@ -58,18 +59,30 @@
                 </button>
             </h2>
             <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-              <div class="accordion-body">Primero. Digitiar el usuario sap que tiene alertas o que se tomarán como base <br> Segundo. Usuario al que se le van asignar las alertas</div>
-              <div class="input-group mb-3"  >
-                  <input id="btn-input1" type="text" class="form-control" placeholder="Enter the reference user code" aria-label="Example: 1005331526" aria-describedby="button-addon2">
-                    <br>
-                    <input id="btn-input1" type="text"  class="form-control" placeholder="Enter the user code to grant alerts" aria-label="Enter the user code to grant alerts" aria-describedby="button-addon2">
-                    <button onclick="myFunction()" id="btn-input1" class="btn btn-outline-secondary" type="button" id="button-addon2">Asignar</button>
+              <div class="accordion-body">Primero. Digitiar el usuario sap que tiene alertas o que se tomarán como base.  Segundo. Usuario al que se le van asignar las alertas.</div>
+              
+              <tr>
+                <td>colum1
+                </td>
+                <td>colum2
+                </td>
+              </tr>
+              
+              <!-- -------------------------- -->
+              <div class="input-group mb-3" style="width : 50%;height: 10%;" >
+                <input id="txtUsersap001" type="text"  minlength="6" maxlength="10" class="form-control" placeholder="Enter the reference user code" aria-label="Example: 1005331526" aria-describedby="button-addon2">
+                <span class="validity"></span>
+                <br>
+                
+                <input id="txtUsersap002" type="text" minlength="6" maxlength="10" class="form-control" placeholder="Enter the user code to grant alerts" aria-label="Enter the user code to grant alerts" aria-describedby="button-addon2">
+                <button onclick="myFunction()" id="btn-input1" class="btn btn-outline-secondary" type="button" id="button-addon2">Asignar</button>
               </div>
-              <div id="alert-ok" class="alert alert-success" role="alert">
-                A simple success alert with <a href="#" class="alert-link">an example link</a>. Give it a click if you like.
+              <div id="alert-ok" style="width : 25%;height: 10%;"  class="alert alert-success" role="alert">
+                Action done successfully
               </div>
-              <div id="alert-ok2" class="alert alert-danger" role="alert">
-                A simple danger alert—check it out!
+
+              <div id="alert-ok2" style="width : 25%;height: 10%;" class="alert alert-danger" role="alert">
+                Action failed, contact support
               </div>
             </div>
         </div>

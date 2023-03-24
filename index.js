@@ -21,11 +21,6 @@ var login = {
     "Password": "Milan2023*",
     "UserName": "1005331526"
 }
-// var login = {
-//     "CompanyDB": "MILANPROD",
-//     "Password": "Edwin2456*",
-//     "UserName": "1005331526"
-// }
 
 
 //  #TLS
@@ -39,7 +34,7 @@ const httpsAgent = new https.Agent({
 });
 
 //  #CONSTANTES & VARIABLES         --------------------
-app.use(express.static(path.join(__dirname,"controller")));//Permite el acceso a los archivos de la carpeta
+// app.use(express.static(path.join(__dirname,"controller")));//Permite el acceso a los archivos de la carpeta// no sirve
 app.use(express.static("public"));//Permite el acceso a los archivos de la carpeta
 
 

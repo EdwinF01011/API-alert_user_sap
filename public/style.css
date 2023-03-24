@@ -5,10 +5,12 @@
     background-color: rgba(249, 249, 196, 0.5);
 }
 
-#btn-input1{
+#txtUsersap001,#txtUsersap002,#btn-input1{
 
     /* margin-right: 5%; */
-    margin: 1%;
+    /* margin: 2.5%; */
+    margin-left: 5%;
+    margin-right: 1%;
 
 }
 
@@ -16,5 +18,18 @@
     margin-left: 50px;
     margin-right: 20px;
     margin-bottom: 20px;
+
+}
+
+input:invalid+span:after {
+    position: absolute; content: 'X';/*  '✖'  */
+    padding-left: 5px;
+    /* margin:2%; */
+}
+
+input:valid+span:after {
+    position: absolute;
+    content: '✓';
+    padding-left: 5px;
 
 }
