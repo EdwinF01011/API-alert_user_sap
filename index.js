@@ -34,18 +34,21 @@ const httpsAgent = new https.Agent({
 });
 
 //  #CONSTANTES & VARIABLES         --------------------
+
 // app.use(express.static(path.join(__dirname,"controller")));//Permite el acceso a los archivos de la carpeta// no sirve
 app.use(express.static("public"));//Permite el acceso a los archivos de la carpeta
 
-
-
 var alerts;
-var cokkieId;
-var fecha= new Date();
+// var cokkieId;
+var fecha= new Date();//drop
+var currentDateObj = new Date();
+
 var sesion={
-    SessionTimeout:0,
-    jornada:'',
-    cokkieId
+    // SessionTimeout:0,
+    // jornada:'',
+    cokkieId:'',
+    timeFuture:'',
+    hour:''
 };
 const urlLogin = 'https://192.168.10.201:50000/b1s/v1/Login';
 const urlAlertUser = 'https://192.168.10.201:50000/b1s/v1/AlertManagements(138)'
@@ -80,16 +83,26 @@ async function Reqlogin() {//Post login service layer
     })
 }
 
+function dateFuture(){// retorna la fecha con 1 hora adelantada
+    //https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Date
+
+    var numberOfMlSeconds = currentDateObj.getTime();
+    var addMlSeconds = 60 * 60000;
+    var newDateObj = new Date(numberOfMlSeconds + addMlSeconds);
+    sesion.hour=newDateObj.getUTCHours()
+    return newDateObj;
+}
+
 async function getAlert(options) {
     return await new Promise((resolve, reject) => {
 
-        fetch("https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLalertUser')/List?cedula='1005331526'",// <- usuario a tomar alertas
+        fetch("https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLalertUser')/List?cedula='01143863676'",// <- usuario a tomar alertas
         // fetch("https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLQueries0001')/List?cedula='MILAN33'",// <- usuario a tomar alertas
 
             options)
-            .then((resp1) => {
+            .then((resp) => {
                 console.log(">>>")
-                return resolve(resp1.json());
+                return resolve(resp.json());
                 // console.log(alerts);
             }).catch(err => {
                 console.log(err)
@@ -119,7 +132,28 @@ async function alertUser(options,alertId) {
     })
 }
 
-function createJson (session){
+async function alertUserDrop(options,alertId) {
+    return await new Promise((resolve, reject) => {
+
+        var uri = "https://192.168.10.201:50000/b1s/v1/AlertManagements("+alertId+")";
+        fetch(uri, options)
+            // .then((response) => response.json() )
+            .then((resp) => {
+                var data = resp;
+                if (data.status == 204) {
+                    return resolve({
+                        message: 'Alertas Eliminadas Correctamente'
+                    })
+                }
+            })
+            .catch((err) => {
+                console.log(err + " < - - error Eliminando la alerta del usuario -"+alertId);
+                return reject(err)
+            })
+    })
+}
+
+function createJson(session){
 
     const fs = require('fs');
 
@@ -133,7 +167,6 @@ function createJson (session){
         }
         return true;
     });
-
 }
 
 //      ROUTES        --------------------
@@ -144,17 +177,18 @@ app.get("/", (req,res)=>{
 })
 
 app.get("/alert", async (req, res0) => {
-
+    alertId.pop();
+    console.log(alertId)
     await Reqlogin().then((res) => {
 
         console.log(res.SessionId);//cokkie
-        cokkieId = "B1SESSION=" + res.SessionId;
+        sesion.cokkieId = "B1SESSION=" + res.SessionId;
         var options = {
             method: 'GET',
             headers: {
-                cookie: cokkieId,
+                cookie: sesion.cokkieId,
                 "Content-Type": "application/json",
-                'Prefer' : 'odata.maxpagesize=0'
+                'Prefer' : 'odata.maxpagesize=0'//paginado
             }
             , agent: httpsAgent
             // ,agent:httpsAgent
@@ -189,7 +223,7 @@ app.get("/alerts", async (req, res) => {
     var options = {
         method: 'PATCH',
         headers: {
-            cookie: cokkieId,
+            cookie:sesion.cokkieId,
             "Content-Type": "application/json"
 
         }
@@ -217,48 +251,45 @@ app.get("/alerts", async (req, res) => {
 
 app.get("/json", async (req, res0) => {
 
-    //asigna un '0' a la izquierda cuando el formato de los minutos no contenga 2 dígitos    
-    var minut = ((fecha.getMinutes()).toString()).length > 1 ? (fecha.getMinutes()).toString() : '0'+(fecha.getMinutes()).toString();
-    var time = fecha.toLocaleTimeString().charAt(0) +minut;
-    var j=fecha.toLocaleTimeString().charAt(8)+fecha.toLocaleTimeString().charAt(9)
+    // //asigna un '0' a la izquierda cuando el formato de los minutos no contenga 2 dígitos    
+    // var minut = ((fecha.getMinutes()).toString()).length > 1 ? (fecha.getMinutes()).toString() : '0'+(fecha.getMinutes()).toString();
+    // var time = fecha.toLocaleTimeString().charAt(0) +minut;
+    // var j=fecha.toLocaleTimeString().charAt(9)+fecha.toLocaleTimeString().charAt(10)
+    // // var j=fecha.toLocaleTimeString().charAt(8)+fecha.toLocaleTimeString().charAt(9)// 
 
-    if (time < out.SessionTimeout && j == out.jornada) {//
-        console.log('Sesión Activa')
+    // console.log(fecha.getUTCDay())
+    // console.log(fecha.getUTCDate())//día del mes
+    // console.log(fecha.getUTCHours())
+    // console.log(fecha.toJSON())
+    // // console.log(moment().hour(Number));
+    
+    
+    // console.log(numberOfMlSeconds);
+    
+    
+    // var h1 = currentDateObj.getUTCHours();//hora actual
+    // // var h2 = sesion.timeFuture.getUTCHours();//hora final
+
+    // console.log(currentDateObj.getUTCHours()+ ' <<< '+out.hour);
+    
+
+    if (currentDateObj.getUTCHours() < out.hour) {
+        // console.log('Sesión Cerrada')
+        res0.send('sesión Abierta');
     }else{
+        console.log('Creando sesión...')
+
         await Reqlogin().then((res) => {
-    
+            
             //tiempo
-            var time_end = (parseInt(fecha.toLocaleTimeString().charAt(0))+1).toString()+ fecha.getMinutes();
-            sesion.SessionTimeout = time_end;
             sesion.cokkieId = res.SessionId;
-            sesion.jornada=fecha.toLocaleTimeString().charAt(8)+fecha.toLocaleTimeString().charAt(9)
-    
-            createJson(sesion).then((resp)=>{//
-    
-            }).catch((err=>{
-                console.error(err );
-            }))
+            sesion.timeFuture = dateFuture();
+
+            createJson(sesion);
     
         }).catch((err) => { console.log(err) })
+        res0.send('sesión Creada');
     }
-
-    // await Reqlogin().then((res) => {
-        
-    //     //tiempo
-    //     var time_end = (parseInt(fecha.toLocaleTimeString().charAt(0))+1).toString()+ fecha.getMinutes();
-    //     sesion.SessionTimeout = time_end;
-    //     sesion.cokkieId = res.SessionId;
-    //     sesion.jornada=fecha.toLocaleTimeString().charAt(8)+fecha.toLocaleTimeString().charAt(9)
-
-    //     createJson(sesion).then((resp)=>{
-
-    //     }).catch((err=>{
-    //         console.error(err );
-    //     }))
-
-    // }).catch((err) => { console.log(err) })
-
-    // res0.send(alertas);
 });
 
 app.get("/alertX", async (req, res0) => {
@@ -270,7 +301,7 @@ app.get("/alertX", async (req, res0) => {
 
     console.log(time)
 
-    if (time > out.SessionTimeout || j != out.jornada) {//
+    if (false /*time > out.SessionTimeout || j != out.jornada*/) {//
 
         console.log('Sesión Closed')
         
@@ -307,13 +338,49 @@ app.get("/alertX", async (req, res0) => {
         });
         
     }
-
-    
-
-
-
     // res0.send(alertas);
 });
+
+app.get("/dropAlert",(req,res)=>{
+    console.log(alertId)
+    // let uri = 'https://192.168.10.201:50000/b1s/v1/AlertManagements(138)'
+    var options={
+        method: 'PATCH',
+        headers: {
+            cookie: sesion.cokkieId,
+            "Content-Type": "application/json"
+        }
+        , agent: httpsAgent
+        , body: JSON.stringify({
+            "AlertManagementRecipients": [
+                {
+                    "UserCode": 363,
+                    "SendEMail": "tNO",
+                    "SendSMS": "tNO",
+                    "SendFax": "tNO",
+                    "SendInternal": "tNO"//Asignador
+                }
+            ]
+        })
+    }
+    // console.log(options[0]['UserCode'])
+    var info;
+    for (var i in alertId){
+
+        console.log('eliminando alerta '+alertId[i]);
+        alertUserDrop(options,alertId[i])
+        .then((resp) => {
+            info=resp;
+        })
+    }
+    res.send(info);
+
+    // fetch(uri,options).then((resp)=>{
+    //     res.send('alerts were removed')
+    // }).catch((err)=>{
+    //     res.send('Error clearing alerts')
+    // })
+})
 
 
 

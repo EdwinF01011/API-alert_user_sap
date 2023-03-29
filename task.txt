@@ -1,9 +1,29 @@
 
 TO DO
 
-#ACTUALIZAR ALERTAS RECIBIENDO 2 PARAMÉTROS (CEDULAS)
+#UI
+-Formulario para asignar en el acordeón
+<
+
+
+#>  ELIMINAR ALERTAS DEL Usuario
+
+-método para extraer las alertas del usuario:OK
+-Tomar todas las alertas e iterar para eliminar:OK
+
+
+<
+
+
+#>  ACTUALIZAR ALERTAS RECIBIENDO 2 PARAMÉTROS (CEDULAS)
 
 -Recibir y enviar los parámetros desde la vista, hacia el back
 
-#
+<
 
+
+#>  SESIÓN
+!problemas con el formato de horas al guardar la Sesión¡
+
+-mejorar este módulo:ok
+<
