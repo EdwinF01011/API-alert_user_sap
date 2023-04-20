@@ -2,28 +2,10 @@
 TO DO
 
 #UI
--Formulario para asignar en el acordeón
-<
+-añadir un popover en los botones de agregar el user_code
 
-
-#>  ELIMINAR ALERTAS DEL Usuario
-
--método para extraer las alertas del usuario:OK
--Tomar todas las alertas e iterar para eliminar:OK
-
-
-<
-
-
-#>  ACTUALIZAR ALERTAS RECIBIENDO 2 PARAMÉTROS (CEDULAS)
-
--Recibir y enviar los parámetros desde la vista, hacia el back
-
-<
-
-
-#>  SESIÓN
-!problemas con el formato de horas al guardar la Sesión¡
-
--mejorar este módulo:ok
-<
+----------
+{"cokkieId":"7bbf5526-d3b8-11ed-8000-3868dd15ded0","timeFuture":"2023-04-05T14:48:27.761Z","hour":14}
+{"cokkieId":"d39f6084-d3f3-11ed-8000-3868dd15ded0","timeFuture":"2023-04-05T21:53:15.012Z","hour":21}
+{"cokkieId":"533e7a50-d3f4-11ed-8000-3868dd15ded0","timeFuture":"2023-04-05T21:56:50.137Z","hour":21}
+{"cokkieId":"4173734e-d7ae-11ed-8000-3868dd15ded0","timeFuture":"2023-04-10T15:45:27.148Z","hour":15}

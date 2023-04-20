@@ -1,26 +1,121 @@
 
 
-function myFunction(){
+//-----------------Fetchs-----------------
+
+
+// function transferAlert(){
+
+//     // myFunction();
+
+//     fetch('/api/getValueHtml',
+//     {
+//         method:'POST',
+//         body: JSON.stringify({
+//             txtUsersap001:document.getElementById("txtUsersap001").value,
+//             txtUsersap002:document.getElementById("txtUsersap002").value
+//         })
+//         ,headers: {
+//             'Content-Type': 'application/json'
+//         }
+//     }).then(res => res.json()).then(data => {
+//         var alert_ok = document.getElementById("alert-ok");
+//         alert_ok.classList.remove("d-none");
+//         alert_ok.innerText=data.message;
+//         // alert(data.message)
+//     });
+
+//     // lg.one()
+
+//     // alert(params.cedula1);
+
     
-    // alert("hel");
-    // console.log("hel2")
-    var cedula1 = document.getElementById("txtUsersap001").value;
-    var cedula2 = document.getElementById("txtUsersap002").value;
+//     // console.log(lg.param.cedula1);
+//     // console.log(lg.param.cedula2);
+// }
 
-    console.log(cedula1);
-    console.log(cedula2);
+function alertDelete(){
+    let alert_ok = document.getElementById("alert-ok");
+    let alert_err = document.getElementById("alert-err");
+    alert_ok.classList.add("d-none");
+    alert_err.classList.add("d-none");
 
-    // alert(cedula1,cedula2);
+    if(window.confirm('¿Seguro de Eliminar las alertas del usuario '+document.getElementById("txtUsersap002").value + '?')){
+        
+        fetch('/alert/delete', {
+            method:'POST',
+                body: JSON.stringify({
+                    txtUsersap002:document.getElementById("txtUsersap002").value
+                })
+                ,headers: {
+                    'Content-Type': 'application/json'
+                }
+        }).then(res => res.json()).then(data => {
+    
+            if (data.message == true) {
+                // var alert_ok = document.getElementById("alert-ok");
+                alert_ok.classList.remove("d-none");
+                // alert_ok.innerText=data.message;
+                alert_ok.innerText='Alertas eliminadas correctamente';
+                
+            }else if(data.message == 'Not exist alerts'){
 
-    var div = document.getElementById("alert-ok");
-    var div2 = document.getElementById("alert-ok2");
-
-    if (div.style.display === "none" && div2.style.display === "none") {
-        div.style.display = "block";
-        div2.style.display = "block";
-    }else{
-        div.style.display = "none";
-        div2.style.display = "none";
+                alert_err.classList.remove("d-none");
+                alert_err.innerText='No hay alertas para eliminar';
+            }
+            else{
+                // var alert_err = document.getElementById("alert-err");
+                alert_err.classList.remove("d-none");
+                // alert_err.innerText=data.message;
+                alert_err.innerText='Error, please try again';
+            }
+        });
     }
 }
+
+function transferAlert(){
+    
+    let alert_ok = document.getElementById("alert-ok");
+    let alert_err = document.getElementById("alert-err");
+    alert_ok.classList.add("d-none");
+    alert_err.classList.add("d-none");
+    // myFunction();
+
+    if(window.confirm('Seguro de realizar la acción?')){
+        
+        fetch('/new',{
+            method:'POST',
+            body: JSON.stringify({
+                txtUsersap001:document.getElementById("txtUsersap001").value,
+                txtUsersap002:document.getElementById("txtUsersap002").value
+            })
+            ,headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => res.json()).then(data => {
+    
+            if (data.message == true) {
+                // var alert_ok = document.getElementById("alert-ok");
+                alert_ok.classList.remove("d-none");
+                // alert_ok.innerText=data.message;
+                alert_ok.innerText='Action done successfully';
+                
+            }else if(data.message == 'Not exist alerts'){
+                alert_err.classList.remove("d-none");
+                alert_err.innerText='No hay alertas para Asignar';
+            }
+            else{
+                // var alert_err = document.getElementById("alert-err");
+                alert_err.classList.remove("d-none");
+                // alert_err.innerText=data.message;
+                alert_err.innerText='Error, please try again';
+            }
+    
+        }).catch(err => {
+            var alert_err = document.getElementById("alert-err");
+            alert_err.classList.remove("d-none");
+            alert_err.innerText=err;
+        });
+    }
+}
+
 
