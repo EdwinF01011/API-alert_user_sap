@@ -16,6 +16,8 @@ app.listen(8080, () => {
 })
 // process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
+
+
 //  #IMPORT FETCH HTTP     --------------------
 
 const fetchP = import('node-fetch').then(mod => mod.default)
@@ -32,6 +34,7 @@ var login = {
     "UserName": "1005331526"
 }
 
+
 //  #TLS
 //https://stackoverflow.com/questions/52478069/node-fetch-disable-ssl-verification
 // const https = require('https');
@@ -40,18 +43,17 @@ import  https from 'https';
 // const path = require("path");
 import path from "path";
 
-
-
 const httpsAgent = new https.Agent({
     rejectUnauthorized: false,
 });
 
 //  #CONSTANTES & VARIABLES         --------------------
 
+import fs from 'fs';
+
 // const lg = require("./public/lg.js");
 // start.params
 // console.log(start.params.cedula1 + 'cedula1')
-
 
 // const server = require("./controller/server.js");
 // start.a;//llama a la funcion de start.js
@@ -59,7 +61,6 @@ const httpsAgent = new https.Agent({
 // start.a.get("/a", (req, res) => {
 //     res.send("hola" );
 // });//llama a la funcion de start.js
-
 
 app.use(express.static("public"));//Permite el acceso a los archivos de la carpeta
 // app.use(express.static("controller"));//Permite el acceso a los archivos de la carpeta
@@ -72,20 +73,23 @@ app.use(express.static("public"));//Permite el acceso a los archivos de la carpe
 // const out = require('./output.json');
 // import { out } from './output.js';
 import  out  from './output.json' assert {type: 'json'};
+import  AlertManagements  from './resource/AlertManagements.json' assert {type: 'json'};
 
+var userid=0;
 const urlLogin = 'https://192.168.10.201:50000/b1s/v1/Login';
 const urlAlert = 'https://192.168.10.201:50000/b1s/v1/AlertManagements(138)'
-const urlUserid_sap = "https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLQueries0002')/List?cedula='1005331526'";
+var urlUserid_sap = "https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLQueries0002')/List?cedula='";//1005331526
 
 const urlAlertUser = "https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLalertUser')/List?cedula='1098684276'"// <- usuario a tomar alertas 'PRUEBAS ENERO'
 // const urlAlertUser ="https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLQueries0001')/List?cedula='1102367438'"// <- usuario a tomar alertas 'MILANPROD'
 // const urlAlertUser ="https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLQueries0001')/List?cedula='80162074'"// <- usuario a tomar alertas 'MILANPROD'
 
-
 // app.use(express.static(path.join(__dirname,"controller")));//Permite el acceso a los archivos de la carpeta// no sirve
 
-
-var alerts;
+var alerts={
+    Code:[],
+    Name:[],
+};
 // var cookieId;
 var fecha= new Date();//no se usa
 var currentDateObj = new Date();
@@ -111,7 +115,6 @@ var request = new Request(urlLogin, {
 //   #METHODS        --------------------
 
 sesion.timeFuture = dateFuture();
-
 
 function Reqlogin() {//Post login service layer
 
@@ -147,13 +150,16 @@ function Reqlogin2() {//Post login service layer; no sirve
         return (resp.json());
 
     }).catch(err => { return (err) });
-
 }
 
 function getUserid_sap(param1,options) {
     // console.log(param1,options  )
 
     return  new Promise((resolve, reject) => {
+        // var x = param1+"'"
+        // console.log(x + 'x')
+        // urlUserid_sap += x;
+        var urlUserid_sap = "https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLQueries0002')/List?cedula='"+param1+"'" ;//1005331526
 
         fetch(urlUserid_sap,options)
             .then((resp) => {
@@ -179,8 +185,10 @@ function dateFuture(){// retorna la fecha con 1 hora adelantada
 
 function getAlert(options,cedula1) {
     return  new Promise((resolve, reject) => {
+        
+        // var url = "https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLalertUser')/List?cedula='"+cedula1+"'";
+        var url ="https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLQueries0001')/List?cedula='"+cedula1+"'"; // <- usuario a tomar alertas 'MILANPROD'
 
-        var url = "https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLalertUser')/List?cedula='"+cedula1+"'";
         fetch(url,options)
             .then((resp) => {
                 // console.log(">>>")
@@ -189,7 +197,44 @@ function getAlert(options,cedula1) {
             }).catch(err => {
                 // console.log(err)
                 console.log(err)
+                return reject(err);
+            });
+    })
+}
 
+function getAlert3(options,cedula1) {
+    return  new Promise((resolve, reject) => {
+
+        const DB = 'PRUEBAS_ENERO';
+        // const DB = 'MILANPROD';
+        // var url = "https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLalertUser')/List?cedula='"+cedula1+"'";
+        // var url_="https://192.168.10.201:50000/b1s/v1/sml.svc/USER_ALERTSParameters(i_user_code='"+cedula1+"')/USER_ALERTS";
+        var url_="https://192.168.10.201:50000/b1s/v1/sml.svc/USER_ALERTSParameters(i_schema='"+DB+"', i_user_code='"+cedula1+"')/USER_ALERTS";
+        
+        fetch(url_,options).then(resp=>resp.json())
+            .then((data) => {
+                console.log(data)
+                return resolve(data);
+                // console.log(alerts);
+            }).catch(err => {
+                // console.log(err)
+                console.log(err)
+                return reject(err);
+            });
+    })
+}
+
+function getAlert2(options,cedula1) {
+    return  new Promise((resolve, reject) => {
+
+        var url = "https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLalertUser')/List?cedula='"+cedula1+"'";
+        fetch(url,options)
+            .then((resp) => {
+                // console.log(">>>")
+                return resolve(resp.json());
+            }).catch(err => {
+                // console.log(err)
+                console.log(err)
                 return reject(err);
             });
     })
@@ -266,8 +311,9 @@ function alertUserDrop2(options,alertId) {
 }
 
 // const fs = require('fs');
-import fs from 'fs';
+// import fs from 'fs';
 import { log } from 'console';
+
 async function createJson(session){
     console.log('1.2-createJson')
     var jsonContent = JSON.stringify(session);
@@ -281,7 +327,6 @@ async function createJson(session){
             }
             return resolve(true);
         });
-
     });
 
     // const fs = require('fs');
@@ -298,22 +343,31 @@ async function createJson(session){
     // });
 }
 
-function createJson2(session){
+
+async function createJson2(options){
+
     console.log('1.2')
+    var all_alerts;
+    const url="https://192.168.10.201:50000/b1s/v1/AlertManagements?$select=Name,Code,Active &$filter=(Active eq 'Y') &$orderby=Code asc";
 
-    const fs = require('fs');
+    return await new Promise((resolve, reject) =>{
 
-    var jsonContent = JSON.stringify(session);
-
-    fs.writeFile("output.json", jsonContent, 'utf8', function (err) {
+        fetch(url,options).then(resp => resp.json())
+        .then((data) => {
+            // console.log(data.value)
+            all_alerts=data;
+            var jsonContent = JSON.stringify(all_alerts);
         
-        if (err ) {
-            console.log("An error occured while writing JSON Object to File.");
-            return (err);
-        }
-        return (true);
-    });
-
+            fs.writeFile("./resource/AlertManagements.json", jsonContent, 'utf8', function (err) {
+                
+                if (err ) {
+                    console.log("An error occured while writing JSON Object to File.");
+                    return reject(err);
+                }
+                return resolve(true);
+            });
+        })
+    })
 }
 
 function getsetAlertUser() {
@@ -360,18 +414,61 @@ app.get("/alert",  (req, res0) => {
             // res0.json(alertas);
             console.log('alertId '+sesion.alertId)
             createJson(sesion);
-
-
             res0.send(sesion.alertId);
             // res0.send(printAlert(alertas));
         }).catch(err => {
             alertas = err;
             console.log(err)
         });
-
     }).catch((err) => { console.log(err) })
     // res0.send(alertas);
 });
+
+app.post("/alert/get",(req, res0)=>{
+    let data = req.body;
+    var txtUsersap=data.txtUsersap;
+    console.log('1')
+    console.log(data)
+    // res0.json(data);
+
+    Reqlogin().then((res) => {
+        console.log(res.SessionId);//cokkie
+        sesion.cookieId = "B1SESSION=" + res.SessionId;
+        var options = {
+            method: 'GET',
+            headers: {
+                cookie: sesion.cookieId,
+                "Content-Type": "application/json",
+                'Prefer' : 'odata.maxpagesize=0'//paginado
+            }
+            , agent: httpsAgent
+        }
+
+        console.log('Enviando petición para las alertas')
+
+        sesion.timeFuture = dateFuture();
+        sesion.cookieId = res.SessionId;
+
+        //-----------------load alerts
+
+        // createJson2(options);no usar, innecesario
+        // console.log(AlertManagements[0]['Name'])
+
+
+        //-----------------load alerts
+
+        getAlert3(options,txtUsersap).then((res) => {//getAlert3
+            alertas = res.value;
+            console.log('2')
+            console.log(alertas)
+            res0.json({message:alertas})
+
+        }).catch(err => {
+            alertas = err;
+            console.log(err)
+        });
+    }).catch((err) => { console.log(err) })
+})
 
 app.get("/alerts", async (req, res) => {
 
@@ -380,7 +477,6 @@ app.get("/alerts", async (req, res) => {
         headers: {
             cookie:sesion.cookieId,
             "Content-Type": "application/json"
-
         }
         , agent: httpsAgent
         , body: JSON.stringify({
@@ -460,7 +556,6 @@ app.get("/alertX", async (req, res0) => {
         console.log('Sesión Closed')
         
     }else{
-
         console.log('Usando Sesión...')
         var options = {
             method: 'GET',
@@ -472,9 +567,7 @@ app.get("/alertX", async (req, res0) => {
             // ,agent:httpsAgent
             // ,body: {ParamList:"cedula='1005331526'"}
         }
-    
         console.log('Enviando petición para las alertas')
-    
         getAlert(options).then((res) => {
             alertas = res.value;
             console.log(alertas);
@@ -485,12 +578,10 @@ app.get("/alertX", async (req, res0) => {
             // res0.json(alertas);
             res0.send(sesion.alertId);
             // res0.send(printAlert(alertas));
-    
         }).catch(err => {
             alertas = err;
             console.log(err)
         });
-        
     }
     // res0.send(alertas);
 });
@@ -502,7 +593,7 @@ app.post('/alert/delete', (req, res0) => {
     let data = req.body;
     // var txtUsersap001=data.txtUsersap001;
     var txtUsersap002=data.txtUsersap002;
-    let userid
+    // let userid
 
     Reqlogin().then((res) => {
 
@@ -520,11 +611,13 @@ app.post('/alert/delete', (req, res0) => {
 
         //------------------
         //------------------
-        getUserid_sap(txtUsersap002,options).then((res3) => {
-            userid=res3.value[0]['USERID'];
-            // console.log('user id:'+userid)
 
-            //------------------
+        console.log('process ending ...'+txtUsersap002)
+
+        getUserid_sap(txtUsersap002,options).then((res3) => {
+            // var userid_2=res3.value[0]['USERID'];
+            var userid=res3.value[0]['USERID'];
+
             let opt = {
                 method: 'PATCH',
                 headers: {
@@ -541,13 +634,14 @@ app.post('/alert/delete', (req, res0) => {
                     ]
                 })
             }
-            //------------------
-            console.log('Enviando petición para las alertas')
             sesion.timeFuture = dateFuture();
             sesion.cookieId = res.SessionId;
+            getAlert(options,txtUsersap002)//.then(data =>data.json())
+            .then((res4) => {
 
-            getAlert(options,txtUsersap002).then((res) => {
-                alertas = res.value;
+                alertas = res4.value;
+                console.log(res4)
+
                 if (alertas.length==0) {
                     res0.json({message:'Not exist alerts'})
                 }else{
@@ -566,59 +660,65 @@ app.post('/alert/delete', (req, res0) => {
                 console.log(err)
                 res0.json({message:false})
             });
+            // console.log('user id:'+userid)
+
+            //------------------
+            //------------------
+            // console.log('process ending u...'+userid_2)
         }).catch((err) => { console.log(err) })
     }).catch((err) => { console.log(err) })
 })
 
 app.get("/dropAlert",(req,res)=>{
     console.log('eliminando alertas')
+    console.log(req.body);
+
+    res.json({message:'ok'})
+
+    // // // console.log(out.alertId)
+    // // // alert(alertId)
 
 
+    // // // let uri = 'https://192.168.10.201:50000/b1s/v1/AlertManagements(138)'
+    // // var options={
+    // //     method: 'PATCH',
+    // //     headers: {
+    // //         cookie: sesion.cookieId,
+    // //         "Content-Type": "application/json"
+    // //     }
+    // //     , agent: httpsAgent
+    // //     , body: JSON.stringify({
+    // //         "AlertManagementRecipients": [
+    // //             {
+    // //                 "UserCode": 567,//   <-- usario a eliminar alertas
+    // //                 "SendEMail": "tNO",
+    // //                 "SendSMS": "tNO",
+    // //                 "SendFax": "tNO",
+    // //                 "SendInternal": "tNO"//Asignador
+    // //             }
+    // //         ]
+    //     })
+    // }
+    // // console.log(options[0]['UserCode'])
 
-    // console.log(out.alertId)
-    // alert(alertId)
+    // var info;
+    // for (var i in alertId){
 
+    //     console.log('eliminando alerta '+alertId[i]);
+    //     alertUserDrop(options,alertId[i])
+    //     .then((resp) => {
+    //         info=resp;
+    //     })
+    // }
 
-    // let uri = 'https://192.168.10.201:50000/b1s/v1/AlertManagements(138)'
-    var options={
-        method: 'PATCH',
-        headers: {
-            cookie: sesion.cookieId,
-            "Content-Type": "application/json"
-        }
-        , agent: httpsAgent
-        , body: JSON.stringify({
-            "AlertManagementRecipients": [
-                {
-                    "UserCode": 567,//   <-- usario a eliminar alertas
-                    "SendEMail": "tNO",
-                    "SendSMS": "tNO",
-                    "SendFax": "tNO",
-                    "SendInternal": "tNO"//Asignador
-                }
-            ]
-        })
-    }
-    // console.log(options[0]['UserCode'])
+    // // console.log(info);
+    // res.send(info);
 
-    var info;
-    for (var i in alertId){
-
-        console.log('eliminando alerta '+alertId[i]);
-        alertUserDrop(options,alertId[i])
-        .then((resp) => {
-            info=resp;
-        })
-    }
-
-    // console.log(info);
-    res.send(info);
-
-    // fetch(uri,options).then((resp)=>{
-    //     res.send('alerts were removed')
-    // }).catch((err)=>{
-    //     res.send('Error clearing alerts')
-    // })
+    // // fetch(uri,options).then((resp)=>{
+    // //     res.send('alerts were removed')
+    // // }).catch((err)=>{
+    // //     res.send('Error clearing alerts')
+    // // })
 })
 
 app.post("/new",  (req, res0) => {
@@ -626,7 +726,6 @@ app.post("/new",  (req, res0) => {
     let data = req.body;
     var txtUsersap001=data.txtUsersap001;
     var txtUsersap002=data.txtUsersap002;
-    var userid;
     var options = {
         method: 'GET',
         headers: {
@@ -657,7 +756,8 @@ app.post("/new",  (req, res0) => {
             }else{
                 getUserid_sap(txtUsersap002,options).then((res3) => {
                     console.log('1.4 user id')
-                    userid=res3.value[0]['USERID'];
+                    var userid=res3.value[0]['USERID'];
+
                     let opt = {
                         method: 'PATCH',
                         headers: {
@@ -685,9 +785,65 @@ app.post("/new",  (req, res0) => {
                         });  
                     }); 
                 }).catch((err) => { console.log(err) })
-
                 res0.json({message:true})
             }
+        }).catch(err => {
+            alertas = err;
+            console.log(err)
+        });
+    }).catch((err) => { console.log(err) })
+});
+
+app.get("/new2",  (req, res0) => {
+
+    var options = {
+        method: 'GET',
+        headers: {
+            cookie: sesion.cookieId,
+            "Content-Type": "application/json",
+            'Prefer' : 'odata.maxpagesize=0'//paginado
+        }
+        , agent: httpsAgent
+    }
+    
+    // //----------------------------------
+    // //----------------------------------
+    
+    var x;
+    Reqlogin().then((resp) => {
+        sesion.timeFuture = dateFuture();
+        sesion.cookieId = "B1SESSION=" + resp.SessionId;
+        options.headers.cookie = sesion.cookieId;
+
+        // createJson(sesion);//comentado, porque retrasa el tiempo de respuesta y no cargan los demás métodos
+        // createJson2(sesion);
+        getAlert2(options,'1005331526').then((res2) => {
+
+            alertas = res2.value;
+            // console.log(alertas);
+
+            for (var i in alertas) {
+
+                
+                var url= "https://192.168.10.201:50000/b1s/v1/AlertManagements?$select=Name &$filter=(QueryID eq "+ alertas[i]['Code']+")";
+                // var url= "https://192.168.10.201:50000/b1s/v1/AlertManagements?$select=Name &$filter=(QueryID eq 723)";
+                // console.log(url);
+                fetch(url,options).then(resp1 => resp1.json())
+                .then((data) => {
+                    x=data.value;
+                    // resp=resp1.json()
+                    // alerts.Code.push(alertas[i]['Code'])
+                    alerts.Name.push(data['Name'])
+                    // alerts.Code =alertas[i]['Code'];
+                    // alerts.Name =data['Name'];
+                    console.log(x);
+                    // console.log(data['Name']);
+                }).catch(err => {
+                    console.log(err)
+                    // return reject(err)
+                })
+            }
+            res0.json(x);
         }).catch(err => {
             alertas = err;
             console.log(err)

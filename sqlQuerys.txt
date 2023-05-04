@@ -1,15 +1,38 @@
-POST#https://192.168.10.201:50000/b1s/v1/SQLQueries
-
+POST#
+https://192.168.10.201:50000/b1s/v1/SQLQueries
 {
- "SqlCode": "SQLQueries0001",
- "SqlName": "obtiene las alertas de un usuario",
- "SqlText": "select T2.\"Code\",T2.\"Name\",T2.\"Active\",T1.\"UserSign\" from OUSR T0 inner join alt1 T1 on T0.\"USERID\" = T1.\"UserSign\" INNER JOIN OALT T2 ON T2.\"Code\" = T1.\"Code\" where T0.\"USER_CODE\" = :cedula ORDER BY T2.\"Code\""
+    "SqlCode": "SQLQueries0001",
+    "SqlName": "obtiene las alertas de un usuario",
+    "SqlText": "select T2.\"Code\",T2.\"Name\",T2.\"Active\",T1.\"UserSign\" from OUSR T0 inner join alt1 T1 on T0.\"USERID\" = T1.\"UserSign\" INNER JOIN OALT T2 ON T2.\"Code\" = T1.\"Code\" where T0.\"USER_CODE\" = :cedula ORDER BY T2.\"Code\""
 }
 
-GET#https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLQueries0002')/List?cedula='1005331526'
+GET#
+https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLQueries0002')/List?cedula='1005331526'
 {
- "SqlCode": "SQLQueries0002",
- "SqlName": "OBTIENE COLUMNA 'USERID' EN TABLA OUSR",
- "SqlText": "SELECT T0.\"USERID\",T0.\"USER_CODE\",T0.\"U_NAME\" FROM OUSR T0 WHERE T0.\"USER_CODE\" = :cedula"
+    "SqlCode": "SQLQueries0002",
+    "SqlName": "OBTIENE COLUMNA 'USERID' EN TABLA OUSR",
+    "SqlText": "SELECT T0.\"USERID\",T0.\"USER_CODE\",T0.\"U_NAME\" FROM OUSR T0 WHERE T0.\"USER_CODE\" = :cedula"
 }
 
+GET#
+https://192.168.10.201:50000/b1s/v1/AlertManagements?$select=Name &$filter=(QueryID eq 723)
+{
+    "headers": {
+    "Content-Type": "application/json",
+    "Prefer" : "odata.maxpagesize=0"//paginado
+    }
+}
+
+//PARA GUARDAR DE MANERA LOCAL
+GET#
+https://192.168.10.201:50000/b1s/v1/AlertManagements?$select=Name,Code,Active &$filter=(Active eq 'Y') &$orderby=Code asc
+{
+    "headers": {
+    "Content-Type": "application/json",
+    "Prefer" : "odata.maxpagesize=0"//paginado
+    }
+}
+
+//USO DE CUBO ANALÍTICO(USER_ALERTS)
+GET#
+https://192.168.10.201:50000/b1s/v1/sml.svc/USER_ALERTSParameters(i_schema='MILANPROD', i_user_code='1090473636')/USER_ALERTS

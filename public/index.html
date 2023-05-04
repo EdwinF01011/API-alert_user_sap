@@ -32,7 +32,7 @@
 
 
     <!-- &nbsp; espacios -->
-    <p class="text-warning bg-dark">&nbsp; Edwin F Ortega Diaz © 2023  Version: 1.1.1
+    <p class="text-warning bg-dark">&nbsp; Edwin F Ortega Diaz © 2023  Version: 2.1.1
     </p>
     <!-- <p class="text-info bg-dark">.text-info</p> -->
 
@@ -55,7 +55,7 @@
     <br>
 
     <!-- <div class="pw"  id="p"><p >a</p></div> -->
- 
+
     
     <div class="accordion accordion-flush" id="accordionFlushExample">
         <div class="accordion-item">
@@ -88,15 +88,102 @@
               </div> -->
               <!-- --------->
               <div class="input-group mb-3">
-                
-                <input id="txtUsersap001" type="text"  minlength="6" maxlength="10" class="form-control" placeholder="Enter the reference user code" aria-label="Example: 1005331526" aria-describedby="button-addon2">
-                
-                <input id="txtUsersap002" type="text" minlength="6" maxlength="10" class="form-control" placeholder="Enter the user code to grant alerts" aria-label="Enter the user code to grant alerts" aria-describedby="button-addon2">
+                <!-- value="1090473636" -->
+                <!-- <input onkeyup="getSearchResults(event, this);"  id="txtUsersap001" type="text"  minlength="6" maxlength="10" class="form-control" placeholder="Enter the reference user code" aria-label="Example: 1005331526" aria-describedby="button-addon2"> -->
 
-                <button  onclick="alertDelete()" id="btn-input1" class="btn btn-outline-secondary" type="button">Delete</button>
-                <button onclick="transferAlert()" id="btn-input2" class="btn btn-outline-secondary" type="button" id="button-addon2">Asignar</button>
+
+                  <input   id="txtUsersap001" type="text" class="form-control" placeholder="Enter the reference user code" aria-label="Example: 1005331526" aria-describedby="button-addon2">
+                  <button onclick="getAlertUser(txtUsersap001.value,'tabla1')" class="btn btn-outline-secondary" type="button" id="button-addon2">Buscar</button>
+
+                  <!-- <p> value="1143866868",value="1116263685-0" </p> -->
+
+                <!-- <input onkeyup="getSearchResults2(event, this);"  id="txtUsersap002" type="text" minlength="6" maxlength="10" class="form-control" placeholder="Enter the user code to grant alerts" aria-label="Enter the user code to grant alerts" aria-describedby="button-addon2"> -->
+
+
+                  <input    id="txtUsersap002" type="text" class="form-control" minlength="6" maxlength="10" placeholder="Enter the user code to grant alerts" aria-label="Enter the user code to grant alerts">
+                  <button onclick="getAlertUser(txtUsersap002.value,'tabla2')" class="btn btn-outline-secondary" type="button">Buscar</button>
+                  <button onclick="alertDelete()" id="btn-input1" class="btn btn-outline-secondary" type="button">Eliminar</button>
+                  <button onclick="transferAlert()" id="btn-input2" class="btn btn-outline-secondary" type="button" id="button-addon2">Asignar</button>
+
+                <!-- <button  onclick="alertDelete()" id="btn-input1" class="btn btn-outline-secondary" type="button">Delete</button> -->
+              
               </div>
 
+              <!-- -------------------------- -->
+              <!-- <input type="button" value="Genera una tabla" onclick="xx()"> -->
+
+
+              <div>
+                <tr>
+                  <td><div>
+                    <table border="1"  style="float: left;" width="50%"><!--class="table table-striped-columns"-->              
+                      <thead>
+                        <tr>
+                          <th>Code</th>
+                          <th>Name</th>
+                          <!-- <th>UserSign</th> -->
+                          <th>Check</th>
+                        </tr>
+                      </thead>
+                      <tbody id="tabla1">
+                      </tbody>
+                    </table>
+                  </div></td>
+                  
+                  <td><div>
+                    <table border="1" style="float: right;" width="40%" ><!-- -->              
+                      <thead>
+                        <tr>
+                          <th>&nbsp;</th>
+
+                          <th>Code</th>
+                          <th>Name</th>
+                          <!-- <th>UserSign</th> -->
+                        </tr>
+                      </thead>
+                      <tbody id="tabla2">
+                      </tbody>
+                    </table>
+                  </div></td>
+                </tr>
+              </div>
+
+              
+
+            
+              
+              
+              <!-- -------------------------- -->
+              
+              <!-- <table class="table" width="50%">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">First</th>
+                    <th scope="col">Last</th>
+                    <th scope="col">Handle</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td colspan="2">Larry the Bird</td>
+                    <td>@twitter</td>
+                  </tr>
+                </tbody>
+              </table> -->
 
 
               <!-- -------------------------- -->
@@ -109,6 +196,7 @@
               <div id="alert-err" style="width : 25%;height: 10%;" class="alert alert-danger d-none" role="alert">
                 Action failed, contact support
               </div>
+
             </div>
         </div>
         <div class="accordion-item">

@@ -1,16 +1,15 @@
-// app.get("/login", (req, res) => {//  Login con el service layer
+import express from 'express';
+import bodyParser from 'body-parser';
 
-//     //Post login service layer
-//     fetch(urlLogin, {
-//         method: 'GET',
-//         headers: new Headers(),
-//         body: JSON.stringify(login),
-//         agent: httpsAgent
-//     }).then((respuesta) => {
-//         return (respuesta.json())
-//     }).then((resp) => {
-//         sesion = resp;
-//         //console.log(resp);
-//     }).catch(err => console.log(err + "  " + "catch...."));
+const app = express();
+app.use(express.urlencoded({ extended: true }));
+// app.use(express.json({
+//     type: '*/*'
+// }));
+app.use(express.json());
 
+app.listen(8080, () => {
+    console.log("Server running 8080port                              ＼(ﾟｰﾟ＼)");
+})
 
+export default app;
