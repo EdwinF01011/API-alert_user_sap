@@ -16,8 +16,6 @@
     
   </head>
   <body>
-
-
     <nav class="navbar bg-dark" data-bs-theme="dark">
         <!-- Navbar content -->
         <div>
@@ -25,48 +23,47 @@
         </div>
     </nav>
 
-    
-    
-    
-    
-
-
     <!-- &nbsp; espacios -->
     <p class="text-warning bg-dark">&nbsp; Edwin F Ortega Diaz © 2023  Version: 2.1.1
     </p>
     <!-- <p class="text-info bg-dark">.text-info</p> -->
 
-
     <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
         <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%">
-        
             <div class="d-flex align-items-center">
-                <strong>Loading...</strong>
+                <strong>...</strong>
                 <!-- <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div> -->
-                
-                <div class="spinner-grow" role="status" >
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-            
+                <!-- <div class="spinner-grow" role="status" >
+                  <span class="visually-hidden">Loading...</span>
+                </div> -->
             </div>
         </div>
     </div>
-
     <br>
-
     <!-- <div class="pw"  id="p"><p >a</p></div> -->
 
-    
     <div class="accordion accordion-flush" id="accordionFlushExample">
-        <div class="accordion-item">
+        <div class="accordion-item">    <!-- 1.GESTIÓN DE ALERTAS - USUARIO -->
             <h2 class="accordion-header" id="flush-headingOne">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                1.ASIGNACIÓN DE ALERTAS
+                <strong>1.GESTIÓN DE ALERTAS - USUARIO</strong>
                 </button>
             </h2>
             <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-              <div class="accordion-body">Primero. Digitiar el usuario sap que tiene alertas o que se tomarán como base.  Segundo. Usuario al que se le van asignar las alertas.</div>
+              <div class="accordion-body">
+                Buscar, Eliminar y Asignar alertas entre usuarios de SAP
+                <!-- Primero. Digitiar el usuario sap que tiene alertas o que se tomarán como base.  Segundo. Usuario al que se le van asignar las alertas. -->
               
+
+              </div>
+              
+              <div id="alert-ok" style="width : 25%;height: 10%;"  class="alert alert-success d-none" role="alert">
+                Action done successfully
+              </div>
+
+              <div id="alert-err" style="width : 25%;height: 10%;" class="alert alert-danger d-none" role="alert">
+                Action failed, contact support
+              </div>
               <!-- <tr>
                 <td>Usuario de referencia
                 </td>
@@ -87,13 +84,15 @@
                 <button onclick="transferAlert()" id="btn-input1" class="btn btn-outline-secondary" type="button" id="button-addon2">Asignar</button>
               </div> -->
               <!-- --------->
+
+              <!-- -------------------------- -->
               <div class="input-group mb-3">
                 <!-- value="1090473636" -->
                 <!-- <input onkeyup="getSearchResults(event, this);"  id="txtUsersap001" type="text"  minlength="6" maxlength="10" class="form-control" placeholder="Enter the reference user code" aria-label="Example: 1005331526" aria-describedby="button-addon2"> -->
 
 
-                  <input   id="txtUsersap001" type="text" class="form-control" placeholder="Enter the reference user code" aria-label="Example: 1005331526" aria-describedby="button-addon2">
-                  <button onclick="getAlertUser(txtUsersap001.value,'tabla1')" class="btn btn-outline-secondary" type="button" id="button-addon2">Buscar</button>
+                  <input value="1232891346"  id="txtUsersap001" type="text" class="form-control" placeholder="Enter the reference user code" aria-label="Example: 1005331526" aria-describedby="button-addon2">
+                  <button onclick="getAlertUser(txtUsersap001.value,'tabla1')" class="btn btn-outline-primary" type="button" id="button-addon2">Buscar</button>
 
                   <!-- <p> value="1143866868",value="1116263685-0" </p> -->
 
@@ -101,41 +100,44 @@
 
 
                   <input    id="txtUsersap002" type="text" class="form-control" minlength="6" maxlength="10" placeholder="Enter the user code to grant alerts" aria-label="Enter the user code to grant alerts">
-                  <button onclick="getAlertUser(txtUsersap002.value,'tabla2')" class="btn btn-outline-secondary" type="button">Buscar</button>
-                  <button onclick="alertDelete()" id="btn-input1" class="btn btn-outline-secondary" type="button">Eliminar</button>
-                  <button onclick="transferAlert()" id="btn-input2" class="btn btn-outline-secondary" type="button" id="button-addon2">Asignar</button>
+                  <button onclick="getAlertUser(txtUsersap002.value,'tabla2')" class="btn btn-outline-primary" type="button">Buscar</button>
+                  <button onclick="alertDelete()" id="btn-input1" class="btn btn-outline-danger" type="button">Eliminar</button>
+                  <!-- <button onclick="transferAlert()" id="btn-input2"  class="btn btn-outline-secondary" type="button" id="button-addon2">Asignar</button> -->
+                  <button onclick="transferAlert()" id="btn-input2"   class="btn btn-outline-success" type="button" id="button-addon2">Asignar</button>
 
                 <!-- <button  onclick="alertDelete()" id="btn-input1" class="btn btn-outline-secondary" type="button">Delete</button> -->
               
               </div>
-
+              
               <!-- -------------------------- -->
-              <!-- <input type="button" value="Genera una tabla" onclick="xx()"> -->
+
+              <button onclick="getElementTable()" id="btn-input3"   class="btn btn-outline-success" type="button" id="button-addon2">Test</button>
 
 
+              <!-- ----------table----------- -->
               <div>
                 <tr>
                   <td><div>
-                    <table border="1"  style="float: left;" width="50%"><!--class="table table-striped-columns"-->              
-                      <thead>
+                    <table class="table-info" border="1"  style="float: left;" width="45%"><!--class="table table-striped-columns"-->              
+                      <thead id="encabezado">
                         <tr>
-                          <th>Code</th>
+                          <th>#</th>
                           <th>Name</th>
+                          <th>Code</th>
                           <!-- <th>UserSign</th> -->
-                          <th>Check</th>
+                          <th>Transferir</th>
                         </tr>
                       </thead>
-                      <tbody id="tabla1">
+                      <tbody  id="tabla1">
                       </tbody>
                     </table>
                   </div></td>
                   
                   <td><div>
-                    <table border="1" style="float: right;" width="40%" ><!-- -->              
-                      <thead>
+                    <table class="table-info" border="1" style="float: right;" width="45%" ><!-- -->              
+                      <thead id="encabezado">
                         <tr>
                           <th>&nbsp;</th>
-
                           <th>Code</th>
                           <th>Name</th>
                           <!-- <th>UserSign</th> -->
@@ -147,15 +149,56 @@
                   </div></td>
                 </tr>
               </div>
+              <!-- <p>-</p> -->
+              <!-- <input type="button" value="Genera una tabla" onclick="xx()"> -->
 
-              
+              <!-- <hr> -->
 
-            
-              
-              
               <!-- -------------------------- -->
-              
-              <!-- <table class="table" width="50%">
+
+              <!-- <div id="alert-ok" style="width : 25%;height: 10%;"  class="alert alert-success d-none" role="alert">
+                Action done successfully
+              </div>
+
+              <div id="alert-err" style="width : 25%;height: 10%;" class="alert alert-danger d-none" role="alert">
+                Action failed, contact support
+              </div> -->
+
+
+            </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="flush-headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+              <strong>2.Accordion Item</strong>
+            </button>
+          </h2>
+          <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being filled with some actual content.</div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="flush-headingThree">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+              <strong>3.</strong>
+            </button>
+          </h2>
+          <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
+          </div>
+        </div>
+    </div>
+
+    <!-- PAPELERA -->
+
+    <!-- <div class="spinner-grow" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div> -->
+    <!-- <script>
+      alert(document.getElementById("txtUsersap001").value)
+    </script> -->
+
+                  <!-- <table class="table" width="50%">
                 <thead>
                   <tr>
                     <th scope="col">#</th>
@@ -184,52 +227,6 @@
                   </tr>
                 </tbody>
               </table> -->
-
-
-              <!-- -------------------------- -->
-
-
-              <div id="alert-ok" style="width : 25%;height: 10%;"  class="alert alert-success d-none" role="alert">
-                Action done successfully
-              </div>
-
-              <div id="alert-err" style="width : 25%;height: 10%;" class="alert alert-danger d-none" role="alert">
-                Action failed, contact support
-              </div>
-
-            </div>
-        </div>
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="flush-headingTwo">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-              2.Accordion Item
-            </button>
-          </h2>
-          <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-            <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being filled with some actual content.</div>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="flush-headingThree">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-              3.
-            </button>
-          </h2>
-          <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
-            <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
-          </div>
-        </div>
-    </div>
-
-
-    <!-- PAPELERA -->
-
-    <!-- <div class="spinner-grow" role="status">
-        <span class="visually-hidden">Loading...</span>
-    </div> -->
-    <!-- <script>
-      alert(document.getElementById("txtUsersap001").value)
-    </script> -->
     
 </body>
 </html>

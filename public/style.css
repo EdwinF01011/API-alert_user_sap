@@ -1,24 +1,49 @@
 
-.accordion accordion-flush, .accordion-item
-{
-    margin:2%;
-    background-color: rgba(249, 249, 196, 0.5);
+body{
+    background-color: rgba(247, 247, 247, 0.979);
+    /* font-family: 'Courier New', Courier, monospace; */
+    /* font-family: Verdana, Geneva, Tahoma, sans-serif; */
+    /* font-style: italic; */
+    /* font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; */
+
 }
 
-#txtUsersap001,#txtUsersap002{
+.accordion accordion-flush, .accordion-item{
+    margin:1%;
+    /* background-color: rgba(223, 223, 223, 0.314); */
+    /* background-color: rgba(249, 249, 196, 0.5); */
+    /* border-color: rgb(0, 0, 0); */
+    /* border-radius: 10px; */
+}
+
+#txtUsersap001{
 
     /* margin-right: 5%; */
     /* margin: 2.5%; */
     margin-left: 5%;
-    /* margin-right: 1%; */
+    /* margin-right: 1%; */  
+}
 
+#txtUsersap002{
+    margin-left: 25%;
+}
+
+#btn-input3{
+    width: 10%;
+    /* width: 50%; */
+    margin-right: 50%;
+    margin-left: 45%;
+    margin-bottom: 1%;
     
 }
+
+
+/* crea una clase de css que alinie un botón en el centro de la pantalla de manera horizontal */
+
 #btn-input2{
     margin-left: 2.5%;
     margin-right: 5%;
 }
-
 
 #alert-ok,#alert-err{
     margin-left: 50px;
@@ -37,5 +62,32 @@ input:valid+span:after {
     position: absolute;
     content: '✓';
     padding-left: 5px;
+}
 
+.table-info{
+    margin-left: 1%;
+    margin-right: 1%;
+}
+
+#encabezado{
+    background-color: rgba(255, 238, 143, 0.31);
+    color: rgb(0, 0, 0);
+}
+
+/*
+*   Path: public\table.css
+*
+
+*/
+
+#btn-asignar-alerta-center{
+    /* background-color: rgb(255, 255, 255); */
+    /* color: rgb(228, 77, 77); */
+    /* border: 50px; */
+    /* border: 1px solid rgb(40, 255, 3); */
+    /* -moz-border-radius: 1px; */
+    /* -webkit-border-radius: 200px; */
+    border-radius: 60px;
+    border: 15px solid rgb(255, 255, 255);
+    
 }
