@@ -28,12 +28,11 @@ const fetch = (...args) => fetchP.then(fn => fn(...args))
 
 //  #CREDENCIALS SAP
 
-var login = {
-    "CompanyDB": "PRUEBAS_ENERO",
-    "Password": "Milan2023*",
-    "UserName": "1005331526"
-}
-
+// var login = {
+//     "CompanyDB": "PRUEBAS_ENERO",
+//     "Password": "Milan2023*",
+//     "UserName": "1005331526"
+// }
 
 //  #TLS
 //https://stackoverflow.com/questions/52478069/node-fetch-disable-ssl-verification
@@ -164,6 +163,9 @@ function getUserid_sap(param1,options) {
         fetch(urlUserid_sap,options)
             .then((resp) => {
                 // return resolve(resp.json());
+                
+                console.log(resp.status)
+
                 return resolve(resp.json());
             }).catch(err => {
                 console.log(err)
@@ -185,9 +187,9 @@ function dateFuture(){// retorna la fecha con 1 hora adelantada
 
 function getAlert(options,cedula1) {
     return  new Promise((resolve, reject) => {
-        
-        // var url = "https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLalertUser')/List?cedula='"+cedula1+"'";
-        var url ="https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLQueries0001')/List?cedula='"+cedula1+"'"; // <- usuario a tomar alertas 'MILANPROD'
+
+        var url = "https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLalertUser')/List?cedula='"+cedula1+"'";
+        // var url ="https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLQueries0001')/List?cedula='"+cedula1+"'"; // <- usuario a tomar alertas 'MILANPROD'
 
         fetch(url,options)
             .then((resp) => {
@@ -196,7 +198,7 @@ function getAlert(options,cedula1) {
                 // console.log(alerts);
             }).catch(err => {
                 // console.log(err)
-                console.log(err)
+                console.log(err+' < - - error getAlert')
                 return reject(err);
             });
     })
@@ -723,6 +725,7 @@ app.get("/dropAlert",(req,res)=>{
 
 app.post("/new",  (req, res0) => {
 
+
     let data = req.body;
     var txtUsersap001=data.txtUsersap001;
     var txtUsersap002=data.txtUsersap002;
@@ -747,6 +750,7 @@ app.post("/new",  (req, res0) => {
         // createJson(sesion);//comentado, porque retrasa el tiempo de respuesta y no cargan los demás métodos
 
         // createJson2(sesion);
+
         getAlert(options,txtUsersap001).then((res2) => {
             sesion.alertId = res2.value;
             alertas = res2.value;
@@ -754,10 +758,12 @@ app.post("/new",  (req, res0) => {
                 console.log('No hay alertas para este usuario');
                 res0.json({message:'Not exist alerts'})
             }else{
-                getUserid_sap(txtUsersap002,options).then((res3) => {
+                
+                
+                getUserid_sap(txtUsersap002,options)
+                .then((res3) => {
                     console.log('1.4 user id')
                     var userid=res3.value[0]['USERID'];
-
                     let opt = {
                         method: 'PATCH',
                         headers: {
