@@ -91,3 +91,9 @@ input:valid+span:after {
     border: 15px solid rgb(255, 255, 255);
     
 }
+
+#svgIcon{
+    font-size: 30px;
+    /* margin: 30px; */
+    margin:0 auto
+}

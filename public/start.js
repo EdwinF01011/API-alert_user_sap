@@ -173,6 +173,7 @@ function getAlertUser(txtUsersap,table){
                 // -----------------Tabla-----------------
                 let str = '';//creamos una variable para concatenar los datos
                 alert_total= data.message.length;
+
                 for(var i = 0; i < data.message.length; i++){//recorremos el arreglo de datos
                     
                     str += '<tr id="fila'+i+'">'
@@ -316,7 +317,7 @@ function getElementTable() {
 
 function imprimir(id) {
     
-    var flex = document.getElementById("flexSwitchCheckChecked"+id).checked;
+    var flex = document.getElementById("flexSwitchCheckChecked").checked;
 
     // flex.addEventListener("click", function(e) {
     //     e.value
