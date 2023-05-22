@@ -3,7 +3,9 @@
 // variables globales
 
 let alerts_user = [];
+let alerts_user2 = [];
 let alerts_total = 0;
+let alerts_total2 = 0;
 
 
 
@@ -46,20 +48,21 @@ function getAlertUser(txtUsersap,table) {
 				}
 				tbody.innerHTML = str;//agregamos la variable str al cuerpo de la tabla
 			} else {
+				alerts_total2 = data.message.length;
 				// -----------------Tabla-----------------
 				var tbody = document.getElementById(table);//obtenemos el cuerpo de la tabla
 				let str = '';//creamos una variable para concatenar los datos
 				for (var i = 0; i < data.message.length; i++) {//recorremos el arreglo de datos
-					str += '<tr>'
+					str += '<tr id="fila_' + i + '">'//fila_
 						+ '<td>' + i + '</td>'
 						+ '<td>' + data.message[i]['Name'] + '</td>' 
 						+ '<td>' + data.message[i]['Code'] + '</td>'
 						+ '<td >' +
 							'<div class="form-check form-switch">' +
-																	'<input class="form-check-input" type="checkbox" role="switch"' +
-																		+'id="flexSwitchCheckChecked" checked>'
+									'<input  onchange="imprimir('+i+')" class="form-check-input" type="checkbox" role="switch"' 
+													+'id="flexSwitchCheckChecked_'+i+'" checked>'
 							+'</div>'
-							+'</td>' +
+						+'</td>' +
 					'</tr>';//concatenamos cada dato en la variable str
 				}
 				tbody.innerHTML = str;//agregamos la variable str al cuerpo de la tabla
@@ -99,14 +102,59 @@ function tranferAlert() {
 	}
 }
 
-function alertDelete() {
+function tranferAlert2(switchCh,table) {
+	getCodeAlerts(switchCh,table);
+	if (window.confirm('Seguro de realizar la acción?')) {
+		fetch('/new2', {
+			method: 'POST',
+			body: JSON.stringify({
+				txtUsersap001: document.getElementById("txtUsersap001").value,
+				txtUsersap002: document.getElementById("txtUsersap002").value,
+				alerts_user: alerts_user
+			})
+			, headers: {
+				'Content-Type': 'application/json'
+			}
+		}).then(res => res.json()).then(data => {
+			console.log('test...');
+			
+			if (data.message == true) {
+				alert('Transferencia exitosa');
+			} else if (data.message == 'Not exist alerts') {
+				alert('No existen alertas para transferir');
+			}
+			else {
+				alert('Error al transferir');
+			}
+		}).catch(err => {
+			alert('Error al transferir');
+			console.log(err);
+		});
+	}
+}
+
+function alertDelete(switchCh,table) {
+
+	// if (window.confirm('¿Seguro de Eliminar las alertas del usuario ' + document.getElementById("txtUsersap002").value + '?')) {
+		
+
+		
+		
+		
+	// 	alert('Eliminación exitosa')
+
+
+
+	// }
+	getCodeAlerts(switchCh,table);
 
     if (window.confirm('¿Seguro de Eliminar las alertas del usuario ' + document.getElementById("txtUsersap002").value + '?')) {
 
-        fetch('/alert/delete', {
+        fetch('/alert/delete2', {
             method: 'POST',
             body: JSON.stringify({
-                txtUsersap002: document.getElementById("txtUsersap002").value
+                txtUsersap002: document.getElementById("txtUsersap002").value,
+				alerts_user2: alerts_user2
             })
             , headers: {
                 'Content-Type': 'application/json'
@@ -121,7 +169,7 @@ function alertDelete() {
 				showToast_E();
             }
             else {
-				alert('Error al eliminar');
+				alert('Error al eliminar_');
             }
         });
     }
@@ -179,52 +227,61 @@ function getElementTable() {
 
 }
 
-function getCodeAlerts() {//obtener el código de las alertas seleccionadas
+function getCodeAlerts(switchCh,table) {//obtener el código de las alertas seleccionadas
 	
-	for (let i = 0; i < alerts_total; i++) {
-
-        var rowCheck = document.getElementById("flexSwitchCheckChecked"+i).checked;
+	if(table == 't1'){
+		for (let i = 0; i < alerts_total; i++) {
+        // var rowCheck = document.getElementById("flexSwitchCheckChecked"+i).checked;
+        var rowCheck = document.getElementById(switchCh+i).checked;
 		if (rowCheck == true) {
 			var x = document.getElementById("fila" + i).getElementsByTagName("td");
 			// console.log(x[2].innerHTML);
 			alerts_user.push(x[2].innerHTML);
 		}
 	}
-	// console.log(alerts_user);
+	}else{
+		for (let i = 0; i < alerts_total2; i++) {
+			// var rowCheck = document.getElementById("flexSwitchCheckChecked"+i).checked;
+			var rowCheck = document.getElementById(switchCh+i).checked;
+			if (rowCheck == true) {
+				var x = document.getElementById("fila_" + i).getElementsByTagName("td");
+				// console.log(x[2].innerHTML);
+				alerts_user2.push(x[2].innerHTML);
+			}
+		}	
+	}
+	// console.log('alerts_user: '+alerts_user);
+	// console.log('alerts_user2: '+alerts_user2);
 }
 
-function tranferAlert2() {
-	getCodeAlerts();
-	if (window.confirm('Seguro de realizar la acción?')) {
-		fetch('/new2', {
-			method: 'POST',
-			body: JSON.stringify({
-				txtUsersap001: document.getElementById("txtUsersap001").value,
-				txtUsersap002: document.getElementById("txtUsersap002").value,
-				alerts_user: alerts_user
-			})
-			, headers: {
-				'Content-Type': 'application/json'
-			}
-		}).then(res => res.json()).then(data => {
-			console.log('test...');
-			
-			if (data.message == true) {
-				alert('Transferencia exitosa');
-			} else if (data.message == 'Not exist alerts') {
-				alert('No existen alertas para transferir');
-			}
-			else {
-				alert('Error al transferir');
-			}
-		}).catch(err => {
-			alert('Error al transferir');
-			console.log(err);
-		});
+
+
+function change_flexSwitch_true(table) {
+
+	if (table == 't1') {
+		for (let i = 0; i < alerts_total; i++) {
+			document.getElementById("flexSwitchCheckChecked"+i).checked = true//cambia el estado del switch
+		}
+	}else{
+		for (let i = 0; i < alerts_total2; i++) {
+			document.getElementById("flexSwitchCheckChecked_"+i).checked = true//cambia el estado del switch
+		}
 	}
 }
 
+function change_flexSwitch_false(table) {
 
+	if (table == 't1') {
+		
+		for (let i = 0; i < alerts_total; i++) {
+			document.getElementById("flexSwitchCheckChecked"+i).checked = false//cambia el estado del switch
+		}
+	}else{
+		for (let i = 0; i < alerts_total2; i++) {
+			document.getElementById("flexSwitchCheckChecked_"+i).checked = false//cambia el estado del switch
+		}
+	}
+}
 
 
 

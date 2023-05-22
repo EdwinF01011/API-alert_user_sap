@@ -664,6 +664,104 @@ app.post('/alert/delete', (req, res0) => {
     }).catch((err) => { console.log(err) })
 })
 
+app.post('/alert/delete2', (req, res0) => {
+    
+    console.log('eliminando alertas')
+
+    let data = req.body;
+    // var txtUsersap001=data.txtUsersap001;
+    var txtUsersap002=data.txtUsersap002;
+    var alerts_user2=data.alerts_user2;
+    // let userid
+
+    Reqlogin().then((res) => {
+
+        console.log(res.SessionId);//cokkie
+        sesion.cookieId = "B1SESSION=" + res.SessionId;
+        var options = {
+            method: 'GET',
+            headers: {
+                cookie: sesion.cookieId,
+                "Content-Type": "application/json",
+                'Prefer' : 'odata.maxpagesize=0'//paginado
+            }
+            , agent: httpsAgent
+        }
+
+        //------------------
+        //------------------
+
+        console.log('process ending ...'+txtUsersap002)
+
+        getUserid_sap(txtUsersap002,options).then((res3) => {
+            // var userid_2=res3.value[0]['USERID'];
+            var userid=res3.value[0]['USERID'];
+
+            let opt = {
+                method: 'PATCH',
+                headers: {
+                    cookie:sesion.cookieId,
+                    "Content-Type": "application/json"
+                }
+                , agent: httpsAgent
+                , body: JSON.stringify({
+                    "AlertManagementRecipients": [
+                        {
+                            "UserCode": userid,
+                            "SendInternal": "tNO"//eliminador
+                        }
+                    ]
+                })
+            }
+            sesion.timeFuture = dateFuture();
+            sesion.cookieId = res.SessionId;
+
+            if (alerts_user2.length==0) {
+                res0.json({message:'Not exist alerts'})
+            }else{
+                for (var i in alerts_user2) {
+                    sesion.alertId.push(alerts_user2[i])
+                    alertUserDrop(opt,alerts_user2[i])
+                    .then((resp) => {
+                        // info=resp;
+                        console.log('Alerta eliminada')
+                    })
+                }
+                res0.json({message:true})
+            }
+
+            // getAlert(options,txtUsersap002)//.then(data =>data.json())
+            // .then((res4) => {
+
+            //     alertas = res4.value;
+            //     console.log(res4)
+
+            //     if (alertas.length==0) {
+            //         res0.json({message:'Not exist alerts'})
+            //     }else{
+            //         for (var i in alertas) {
+            //             sesion.alertId.push(alertas[i]['Code'])
+            //             alertUserDrop(opt,alertas[i]['Code'])
+            //             .then((resp) => {
+            //                 // info=resp;
+            //                 console.log('Alerta eliminada')
+            //             })
+            //         }
+            //         res0.json({message:true})
+            //     }
+            // }).catch(err => {
+            //     alertas = err;
+            //     console.log(err)
+            // });
+
+        }).catch((err) => {
+            console.log(err) 
+            res0.json({message:false})
+        })
+
+    }).catch((err) => { console.log(err) })
+})
+
 app.get("/dropAlert",(req,res)=>{
     console.log('eliminando alertas')
     console.log(req.body);

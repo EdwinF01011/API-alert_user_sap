@@ -120,7 +120,7 @@
 										<!-- aling vertical justify horizontal-->
 										<div class="col-3">
 											<div class="row justify-content-center py-1">
-												<button onclick="tranferAlert2()" type="button" class="btn btn-outline-success">Asignar
+												<button onclick="tranferAlert2('flexSwitchCheckChecked','t1')" type="button" class="btn btn-outline-success">Asignar
 													Alertas -></button>
 											</div>
 										</div>
@@ -144,18 +144,18 @@
 														</div>
 
 													</div>
-													<div class="col-auto">
-														<button type="button" class="btn btn-outline-danger" >Quitar
+													<!-- <div class="col-auto">
+														<button type="button" class="btn btn-outline-danger" >Quitarr
 															Alertas</button>
-													</div>
+													</div> -->
 												</div>
 											</div>
 
-											<!-- <button  onclick="getCodeAlerts()" class="btn btn-outline-info" >Seleccionar todo</button> -->
+											<button  onclick="getCodeAlerts('flexSwitchCheckChecked','t1')" class="btn btn-outline-info" >Seleccionar todo</button>
 
 											<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-												<button class="btn btn-primary me-md-2" type="button">Button</button>
-												<button class="btn btn-primary" type="button">Button</button>
+												<button onclick="change_flexSwitch_true('t1')" class="btn btn-primary" type="button">All</button>
+												<button onclick="change_flexSwitch_false('t1')" class="btn btn-primary me-md-2" type="button">None</button>
 											</div>
 
 
@@ -214,10 +214,15 @@
 
 													</div>
 													<div class="col-auto">
-														<button onclick="alertDelete()" type="button" class="btn btn-danger">Quitar
+														<button onclick="alertDelete('flexSwitchCheckChecked_','t2')" type="button" class="btn btn-danger">Quitar
 															Alertas</button>
 													</div>
 												</div>
+											</div>
+
+											<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+												<button onclick="change_flexSwitch_true('t2')" class="btn btn-primary" type="button">All</button>
+												<button onclick="change_flexSwitch_false('t2')" class="btn btn-primary me-md-2" type="button">None</button>
 											</div>
 
 											<!-- Cuerpo de la tarjeta -->
