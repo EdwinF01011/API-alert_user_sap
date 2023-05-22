@@ -26,7 +26,7 @@
 		<div>
 			<h2>&nbsp; HOME API SAP</h2>
 		</div>
-		<div class="col-2">
+		<!-- <div class="col-2">
 			<div class="form-floating">
 				<select class="form-select" id="floatingSelectGrid" aria-label="Floating label select example">
 					<option selected>Open this selection menu</option>
@@ -36,7 +36,8 @@
 				</select>
 				<label for="floatingSelectGrid">Select an instance</label>
 			</div>
-		</div>
+		</div> -->
+
 	</nav>
 
 
@@ -45,7 +46,7 @@
 
 
 	<!-- button toast  -->
-	<button type="button" class="btn btn-primary" id="toastElBtn" onclick="showToast()">Show live toast</button>
+	<!-- <button type="button" class="btn btn-primary" id="toastElBtn" onclick="showToast()">Show live toast</button> -->
 
 
 	<!-- toast error-->
@@ -115,12 +116,13 @@
 						<div class="px-1 py-3">
 							<div class="row justify-content-center">
 								<div class="col-12 py-2">
-									<h4 class="text-right">Gestión de alerta - SAP user</h4>
+									<h4 class="text-right">Gestión de alertas de usuario - SAP</h4>
 									<div class="row align-content-center justify-content-center">
 										<!-- aling vertical justify horizontal-->
 										<div class="col-3">
 											<div class="row justify-content-center py-1">
-												<button onclick="tranferAlert2('flexSwitchCheckChecked','t1')" type="button" class="btn btn-outline-success">Asignar
+												<button id="btn-tranferirAlertas" onclick="tranferAlert2('flexSwitchCheckChecked','t1')" type="button"
+													class="btn btn-outline-success  "  disabled>Asignar
 													Alertas -></button>
 											</div>
 										</div>
@@ -151,11 +153,14 @@
 												</div>
 											</div>
 
-											<button  onclick="getCodeAlerts('flexSwitchCheckChecked','t1')" class="btn btn-outline-info" >Seleccionar todo</button>
+											<!-- <button onclick="getCodeAlerts('flexSwitchCheckChecked','t1')"
+												class="btn btn-outline-info">Seleccionar todo</button> -->
 
 											<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-												<button onclick="change_flexSwitch_true('t1')" class="btn btn-primary" type="button">All</button>
-												<button onclick="change_flexSwitch_false('t1')" class="btn btn-primary me-md-2" type="button">None</button>
+												<button onclick="change_flexSwitch_true('t1')" class="btn btn-primary"
+													type="button">All</button>
+												<button onclick="change_flexSwitch_false('t1')" class="btn btn-primary me-md-2"
+													type="button">None</button>
 											</div>
 
 
@@ -184,7 +189,7 @@
 								<!-- button -->
 								<div class="col-1 align-self-center">
 									<div class="row justify-content-center">
-										<button onclick="tranferAlert()" id="btn-asignar-alerta-center" type="button"
+										<button disabled onclick="tranferAlert2('flexSwitchCheckChecked','t1')" id="btn-asignar-alerta-center" type="button"
 											class="btn btn-outline-success btn-floating px-2 py-2 ">
 											<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 												stroke="currentColor">
@@ -214,15 +219,18 @@
 
 													</div>
 													<div class="col-auto">
-														<button onclick="alertDelete('flexSwitchCheckChecked_','t2')" type="button" class="btn btn-danger">Quitar
+														<button id="btn-quitarAlertas" disabled onclick="alertDelete('flexSwitchCheckChecked_','t2')" type="button"
+															class="btn btn-danger">Quitar
 															Alertas</button>
 													</div>
 												</div>
 											</div>
 
 											<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-												<button onclick="change_flexSwitch_true('t2')" class="btn btn-primary" type="button">All</button>
-												<button onclick="change_flexSwitch_false('t2')" class="btn btn-primary me-md-2" type="button">None</button>
+												<button onclick="change_flexSwitch_true('t2')" class="btn btn-primary"
+													type="button">All</button>
+												<button onclick="change_flexSwitch_false('t2')" class="btn btn-primary me-md-2"
+													type="button">None</button>
 											</div>
 
 											<!-- Cuerpo de la tarjeta -->

@@ -22,8 +22,11 @@ function getAlertUser(txtUsersap,table) {
 		}).then(res => res.json()).then(data => {
 
 			var tbody = document.getElementById(table);//obtenemos el cuerpo de la tabla
+			if (table == 'tabla1' && data.message.length > 0) {
 
-			if (table == 'tabla1') {
+				document.getElementById('btn-tranferirAlertas').disabled = false;//habilita el botón de transferir
+				document.getElementById('btn-asignar-alerta-center').disabled = false;//habilita el botón de transferir
+				
 				// -----------------Tabla-----------------
 				let str = '';//creamos una variable para concatenar los datos
 				alerts_total = data.message.length;
@@ -39,7 +42,7 @@ function getAlertUser(txtUsersap,table) {
 							// '<input onchange="imprimir(' + i + ')" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked' + i + '" checked>' +
 							// '<label class="form-check-label" for="flexSwitchCheckChecked"></label>'
 							'<div class="form-check form-switch">' +
-													'<input  onchange="imprimir('+i+')" class="form-check-input" type="checkbox" role="switch"' 
+													'<input   class="form-check-input" type="checkbox" role="switch"' //onchange="imprimir('+i+')"
 																		+'id="flexSwitchCheckChecked'+i+'" checked>'
 							+'</div>'+
 						'</td>' +
@@ -47,7 +50,9 @@ function getAlertUser(txtUsersap,table) {
 					// alert_total=data.message[i]['id__'];
 				}
 				tbody.innerHTML = str;//agregamos la variable str al cuerpo de la tabla
-			} else {
+			} else if(table == 'tabla2' && data.message.length > 0){
+				document.getElementById('btn-quitarAlertas').disabled = false;//habilita el botón de transferir
+
 				alerts_total2 = data.message.length;
 				// -----------------Tabla-----------------
 				var tbody = document.getElementById(table);//obtenemos el cuerpo de la tabla
@@ -59,7 +64,7 @@ function getAlertUser(txtUsersap,table) {
 						+ '<td>' + data.message[i]['Code'] + '</td>'
 						+ '<td >' +
 							'<div class="form-check form-switch">' +
-									'<input  onchange="imprimir('+i+')" class="form-check-input" type="checkbox" role="switch"' 
+									'<input class="form-check-input" type="checkbox" role="switch"' //onchange="imprimir('+i+')"
 													+'id="flexSwitchCheckChecked_'+i+'" checked>'
 							+'</div>'
 						+'</td>' +
@@ -72,8 +77,9 @@ function getAlertUser(txtUsersap,table) {
 
 function tranferAlert() {
 	// alert('tranferAlert');
+	var txt2= document.getElementById("txtUsersap002").value
 
-	if (window.confirm('Seguro de realizar la acción?')) {
+	if (window.confirm('Seguro de realizar la acción?') && txt2 != '') {
 		fetch('/new', {
 			method: 'POST',
 			body: JSON.stringify({
