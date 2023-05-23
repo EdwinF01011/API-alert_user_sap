@@ -3,7 +3,7 @@ TO DO
 
 #UI
 -añadir un popover en los botones de agregar el user_code
--añadir botones de seleccionar todo o descarmar todo-para las tablas
+
 
 ----------
 {"cokkieId":"7bbf5526-d3b8-11ed-8000-3868dd15ded0","timeFuture":"2023-04-05T14:48:27.761Z","hour":14}

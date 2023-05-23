@@ -10,6 +10,10 @@ let alerts_total2 = 0;
 
 
 function getAlertUser(txtUsersap,table) {
+
+	var tbody = document.getElementById(table);//obtenemos el cuerpo de la tabla
+	tbody.innerHTML = '';//limpiamos el cuerpo de la tabla
+
 	fetch("/alert/get",
 		{
 			method: 'POST',
@@ -22,6 +26,7 @@ function getAlertUser(txtUsersap,table) {
 		}).then(res => res.json()).then(data => {
 
 			var tbody = document.getElementById(table);//obtenemos el cuerpo de la tabla
+
 			if (table == 'tabla1' && data.message.length > 0) {
 
 				document.getElementById('btn-tranferirAlertas').disabled = false;//habilita el botón de transferir
@@ -141,17 +146,6 @@ function tranferAlert2(switchCh,table) {
 
 function alertDelete(switchCh,table) {
 
-	// if (window.confirm('¿Seguro de Eliminar las alertas del usuario ' + document.getElementById("txtUsersap002").value + '?')) {
-		
-
-		
-		
-		
-	// 	alert('Eliminación exitosa')
-
-
-
-	// }
 	getCodeAlerts(switchCh,table);
 
     if (window.confirm('¿Seguro de Eliminar las alertas del usuario ' + document.getElementById("txtUsersap002").value + '?')) {
@@ -289,7 +283,16 @@ function change_flexSwitch_false(table) {
 	}
 }
 
+function changeText() {
 
+	// if(document.getElementById("txtUsersap001").value != '' || document.getElementById("txtUsersap002").value != ''){
+	// 	document.getElementById('btn-tranferirAlertas').disabled = true;//habilita el botón de transferir
+	// 	document.getElementById('btn-asignar-alerta-center').disabled = true;//habilita el botón de transferir
+	// 	alert('changeText');
+	// }
+
+
+}
 
 
 
