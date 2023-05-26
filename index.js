@@ -759,7 +759,10 @@ app.post('/alert/delete2', (req, res0) => {
             res0.json({message:false})
         })
 
-    }).catch((err) => { console.log(err) })
+    }).catch((err) => { 
+        console.log(err)
+        res0.json({message:false})
+    })
 })
 
 app.get("/dropAlert",(req,res)=>{

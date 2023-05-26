@@ -64,6 +64,7 @@ function getAlertUser(txtUsersap,table) {
 					// alert_total=data.message[i]['id__'];
 				}
 				tbody.innerHTML = str;//agregamos la variable str al cuerpo de la tabla
+				showToast_G();
 			} else if(table == 'tabla2' && data.message.length > 0){
 
 				document.getElementById('btn-quitarAlertas').disabled = false;
@@ -87,8 +88,14 @@ function getAlertUser(txtUsersap,table) {
 					'</tr>';//concatenamos cada dato en la variable str
 				}
 				tbody.innerHTML = str;//agregamos la variable str al cuerpo de la tabla
+				showToast_G();
+			}else{
+				showToast_N();
 			}
-		})
+		}).catch(err => {
+			showToast_E();
+			// showToast_N()
+		});
 }
 
 function tranferAlert() {
@@ -141,15 +148,20 @@ function tranferAlert2(switchCh,table) {
 			console.log('test...');
 			
 			if (data.message == true) {
-				alert('Transferencia exitosa');
+				// alert('Transferencia exitosa');
+				showToast_G()
 			} else if (data.message == 'Not exist alerts') {
-				alert('No existen alertas para transferir');
+				// alert('No existen alertas para transferir');
+				showToast_N()
+
 			}
 			else {
-				alert('Error al transferir');
+				// alert('Error al transferir');
+				showToast_E()
 			}
 		}).catch(err => {
-			alert('Error al transferir');
+			// alert('Error al transferir');
+			showToast_E()
 			console.log(err);
 		});
 	}
@@ -175,12 +187,15 @@ function alertDelete(switchCh,table) {
             if (data.message == true) {
 				// alert('Eliminación exitosa');
 				showToast_G();
-            } else if (data.message == 'Not exist alerts') {
+            // } else if (data.message == 'Not exist alerts') {
+            } else if (data.message == false) {
 				// alert('No existen alertas para eliminar');
 				showToast_E();
             }
             else {
-				alert('Error al eliminar_');
+				showToast_E();
+
+				// alert('Error al eliminar_');
             }
         });
     }
@@ -192,6 +207,10 @@ function showToast_G() {//https://getbootstrap.com/docs/5.0/components/toasts/
 function showToast_E() {//https://getbootstrap.com/docs/5.0/components/toasts/
 return new bootstrap.Toast(liveToastErr, {animation:true,autohide:true ,delay:5000}).show();
 }
+
+function showToast_N() {//https://getbootstrap.com/docs/5.0/components/toasts/
+	return new bootstrap.Toast(liveToastNothing, {animation:true,autohide:true ,delay:5000}).show();
+	}
 
 function imprimir(id) {
     

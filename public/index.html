@@ -41,7 +41,7 @@
 	</nav>
 
 
-	<p class="text-warning bg-dark">&nbsp; Edwin F Ortega Diaz © 2023 Version: 2.1.1
+	<p class="text-warning bg-dark">&nbsp; Edwin F Ortega Diaz © 2023 Version: 3.0.1
 	</p>
 
 
@@ -54,17 +54,17 @@
 		<div id="liveToastErr" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
 			<div class="toast-header">
 				<!-- <img src="..." class="rounded me-2" alt="..."> -->
-				<svg id="svgIcon" style="height: 50px; width: 50px; color: red;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+				<svg style="height: 50px; width: 50px; color: red;" id="svgIcon"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
 					<path fill-rule="evenodd"
 						d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z"
 						clip-rule="evenodd" />
 				</svg>
-				<strong class="me-auto" id="toast-title">Bootstrap</strong>
-				<small>11 mins ago</small>
+				<strong class="me-auto" id="toast-title">Notificación</strong>
+				<small>Right now</small>
 				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
 			</div>
 			<div class="toast-body" id="toast-text">
-				Hello, world! This is a toast message.
+				¡UPS!... ha ocurrrido un error, contacta a soporte.
 			</div>
 		</div>
 	</div>
@@ -80,15 +80,36 @@
 						clip-rule="evenodd" />
 				</svg>
 
-				<strong class="me-auto">Bootstrap</strong>
-				<small>11 mins ago</small>
+				<strong class="me-auto">Notificación</strong>
+				<small>Right now</small>
 				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
 			</div>
 			<div class="toast-body">
-				Hello, world! This is a toast message.
+				Successful process.
 			</div>
 		</div>
 	</div>
+
+	<!-- toast nothing-->
+	<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+		<div id="liveToastNothing" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+			<div class="toast-header">
+				<!-- <img src="..." class="rounded me-2" alt="..."> -->
+
+				<svg style="height: 50px; width: 50px; color: rgb(255, 242, 0);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+					<path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 01.67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 11-.671-1.34l.041-.022zM12 9a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
+				</svg>
+
+				<strong class="me-auto">Notificación</strong>
+				<small>Right now</small>
+				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+			<div class="toast-body">
+				No answer (0).
+			</div>
+		</div>
+	</div>
+
 
 	<!-- ACORDEÓN -->
 
@@ -137,9 +158,11 @@
 																placeholder="Recipient's username" aria-label="Recipient's username"
 																aria-describedby="button-addon2">
 															<button onclick="getAlertUser(txtUsersap001.value,'tabla1')"
-																class="btn btn-outline-secondary " type="button" id="button-addon2">Buscar</button>
+																class="btn btn-outline-secondary " type="button" id="button-addon2">Buscar
+																</button>
 														</div>
 													</div>
+
 													<!-- <div class="col-auto">
 														<button type="button" class="btn btn-outline-danger" >Quitarr
 															Alertas</button>
