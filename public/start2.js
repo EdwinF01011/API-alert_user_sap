@@ -7,6 +7,14 @@ let alerts_user2 = [];
 let alerts_total = 0;
 let alerts_total2 = 0;
 
+const btn_select= '<button  onclick="change_flexSwitch_true('+"'t1'"+')" class="btn btn-primary " '+
+				'type="button">All</button>'+
+				'<button  onclick="change_flexSwitch_false('+"'t1'"+')" class="btn btn-primary" ' +
+				'type="button">None</button>';
+const btn_select1= '<button  onclick="change_flexSwitch_true('+"'t2'"+')" class="btn btn-primary " '+
+				'type="button">All</button>'+
+				'<button  onclick="change_flexSwitch_false('+"'t2'"+')" class="btn btn-primary" ' +
+				'type="button">None</button>';
 
 
 function getAlertUser(txtUsersap,table) {
@@ -31,12 +39,13 @@ function getAlertUser(txtUsersap,table) {
 
 				document.getElementById('btn-tranferirAlertas').disabled = false;//habilita el botón de transferir
 				document.getElementById('btn-asignar-alerta-center').disabled = false;//habilita el botón de transferir
+				document.getElementById('div_btn_select').innerHTML = btn_select;//habilita el botón de transferir
+
 				
 				// -----------------Tabla-----------------
 				let str = '';//creamos una variable para concatenar los datos
 				alerts_total = data.message.length;
 				for (var i = 0; i < data.message.length; i++) {//recorremos el arreglo de datos
-
 					str += '<tr id="fila' + i + '">'
 						// +'<th>&nbsp;<p>   </p></th>'
 						+ '<td>' + i + '</td>'
@@ -47,7 +56,7 @@ function getAlertUser(txtUsersap,table) {
 							// '<input onchange="imprimir(' + i + ')" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked' + i + '" checked>' +
 							// '<label class="form-check-label" for="flexSwitchCheckChecked"></label>'
 							'<div class="form-check form-switch">' +
-													'<input   class="form-check-input" type="checkbox" role="switch"' //onchange="imprimir('+i+')"
+													'<input onchange="change_flexSwitchCheckChecked('+"'t1'"+')"  class="form-check-input" type="checkbox" role="switch"' //onchange="imprimir('+i+')" //change_flexSwitchCheckChecked(table)
 																		+'id="flexSwitchCheckChecked'+i+'" checked>'
 							+'</div>'+
 						'</td>' +
@@ -56,7 +65,9 @@ function getAlertUser(txtUsersap,table) {
 				}
 				tbody.innerHTML = str;//agregamos la variable str al cuerpo de la tabla
 			} else if(table == 'tabla2' && data.message.length > 0){
-				document.getElementById('btn-quitarAlertas').disabled = false;//habilita el botón de transferir
+
+				document.getElementById('btn-quitarAlertas').disabled = false;
+				document.getElementById('div_btn_select1').innerHTML = btn_select1;
 
 				alerts_total2 = data.message.length;
 				// -----------------Tabla-----------------
@@ -69,7 +80,7 @@ function getAlertUser(txtUsersap,table) {
 						+ '<td>' + data.message[i]['Code'] + '</td>'
 						+ '<td >' +
 							'<div class="form-check form-switch">' +
-									'<input class="form-check-input" type="checkbox" role="switch"' //onchange="imprimir('+i+')"
+									'<input onchange="change_flexSwitchCheckChecked('+"'t2'"+')" class="form-check-input" type="checkbox" role="switch"' //onchange="imprimir('+i+')"
 													+'id="flexSwitchCheckChecked_'+i+'" checked>'
 							+'</div>'
 						+'</td>' +
@@ -254,15 +265,16 @@ function getCodeAlerts(switchCh,table) {//obtener el código de las alertas sele
 	// console.log('alerts_user2: '+alerts_user2);
 }
 
-
-
 function change_flexSwitch_true(table) {
 
 	if (table == 't1') {
+		document.getElementById('btn-tranferirAlertas').disabled = false;//habilita el botón de transferir
+		document.getElementById('btn-asignar-alerta-center').disabled = false;//habilita el botón de transferir
 		for (let i = 0; i < alerts_total; i++) {
 			document.getElementById("flexSwitchCheckChecked"+i).checked = true//cambia el estado del switch
 		}
 	}else{
+		document.getElementById('btn-quitarAlertas').disabled = false;
 		for (let i = 0; i < alerts_total2; i++) {
 			document.getElementById("flexSwitchCheckChecked_"+i).checked = true//cambia el estado del switch
 		}
@@ -272,18 +284,20 @@ function change_flexSwitch_true(table) {
 function change_flexSwitch_false(table) {
 
 	if (table == 't1') {
-		
+		document.getElementById('btn-tranferirAlertas').disabled = true;//deshabilita el botón de transferir
+		document.getElementById('btn-asignar-alerta-center').disabled = true;//deshabilita el botón de transferir
 		for (let i = 0; i < alerts_total; i++) {
 			document.getElementById("flexSwitchCheckChecked"+i).checked = false//cambia el estado del switch
 		}
 	}else{
+		document.getElementById('btn-quitarAlertas').disabled = true;
 		for (let i = 0; i < alerts_total2; i++) {
 			document.getElementById("flexSwitchCheckChecked_"+i).checked = false//cambia el estado del switch
 		}
 	}
 }
 
-function changeText() {
+function changeText(table) {
 
 	// if(document.getElementById("txtUsersap001").value != '' || document.getElementById("txtUsersap002").value != ''){
 	// 	document.getElementById('btn-tranferirAlertas').disabled = true;//habilita el botón de transferir
@@ -291,8 +305,62 @@ function changeText() {
 	// 	alert('changeText');
 	// }
 
-
+	
+	
+	if(table == 't1'){
+		let div_btn_select = document.getElementById('div_btn_select');//div de botónes de seleccionar todos
+		div_btn_select.innerHTML = '';//oculta el div de botónes de seleccionar todos
+		document.getElementById('btn-tranferirAlertas').disabled = true;//deshabilita el botón de transferir
+		document.getElementById('btn-asignar-alerta-center').disabled = true;//deshabilita el botón de transferir
+		change_flexSwitch_false('t1')
+		alerts_total=0;
+		
+	}else{
+		let div_btn_select1 = document.getElementById('div_btn_select1');//div de botónes de seleccionar todos
+		div_btn_select1.innerHTML = '';//oculta el div de botónes de seleccionar todos
+		document.getElementById('btn-quitarAlertas').disabled = true;
+		change_flexSwitch_false('t2')
+		alerts_total2=0;
+	}
 }
+
+function change_flexSwitchCheckChecked(table) {
+//Controla que si hay un switch activado se habilite el botón de transferir
+	var v=0;
+	let i
+	// console.log(':v');
+	if(table == 't1'){
+		for ( i = 0; i < alerts_total; i++) {
+			var value = document.getElementById("flexSwitchCheckChecked"+i).checked
+			// console.log(value+	'--'+alerts_total);
+			if(value == false){
+				++v;
+			}
+		}
+		if(v == alerts_total){
+			document.getElementById('btn-tranferirAlertas').disabled = true;
+			document.getElementById('btn-asignar-alerta-center').disabled = true;
+		}else{
+			document.getElementById('btn-tranferirAlertas').disabled = false;
+			document.getElementById('btn-asignar-alerta-center').disabled = false;
+		}
+	}else if(table == 't2'){
+		for ( i= 0; i < alerts_total2; i++) {
+			var value = document.getElementById("flexSwitchCheckChecked_"+i).checked
+			if(value == false){
+				++v;
+			}
+		}
+		if(v == alerts_total2){
+			document.getElementById('btn-quitarAlertas').disabled = true;
+		}else{
+			document.getElementById('btn-quitarAlertas').disabled = false;
+		}
+	}
+}
+
+
+
 
 
 

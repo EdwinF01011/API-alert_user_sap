@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 // }));
 app.use(express.json());
 
-app.listen(8080, () => {
+app.listen(8080, () => {//'192.168.10.173'
     console.log("Server running 8080port                              ＼(ﾟｰﾟ＼)");
 })
 // process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;

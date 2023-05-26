@@ -54,16 +54,16 @@
 		<div id="liveToastErr" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
 			<div class="toast-header">
 				<!-- <img src="..." class="rounded me-2" alt="..."> -->
-				<svg id="svgIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 3x">
+				<svg id="svgIcon" style="height: 50px; width: 50px; color: red;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
 					<path fill-rule="evenodd"
 						d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z"
 						clip-rule="evenodd" />
 				</svg>
-				<strong class="me-auto">Bootstrap</strong>
+				<strong class="me-auto" id="toast-title">Bootstrap</strong>
 				<small>11 mins ago</small>
 				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
 			</div>
-			<div class="toast-body">
+			<div class="toast-body" id="toast-text">
 				Hello, world! This is a toast message.
 			</div>
 		</div>
@@ -74,7 +74,7 @@
 		<div id="liveToastGood" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
 			<div class="toast-header">
 				<!-- <img src="..." class="rounded me-2" alt="..."> -->
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+				<svg style="height: 50px; width: 50px; color: rgb(43, 255, 0);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
 					<path fill-rule="evenodd"
 						d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
 						clip-rule="evenodd" />
@@ -133,7 +133,7 @@
 													<!-- Buscador de Alertas -->
 													<div class="col-auto">
 														<div class="input-group mb-4" >
-															<input onchange="changeText()" value="1005331526" id="txtUsersap001" type="text" class="form-control"
+															<input onkeyup="changeText('t1')" value="1005331526" id="txtUsersap001" type="text" class="form-control"
 																placeholder="Recipient's username" aria-label="Recipient's username"
 																aria-describedby="button-addon2">
 															<button onclick="getAlertUser(txtUsersap001.value,'tabla1')"
@@ -150,11 +150,13 @@
 											<!-- <button onclick="getCodeAlerts('flexSwitchCheckChecked','t1')"
 												class="btn btn-outline-info">Seleccionar todo</button> -->
 
-											<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-												<button onclick="change_flexSwitch_true('t1')" class="btn btn-primary"
+											<div class="d-grid gap-2 d-md-flex justify-content-md-end"  id="div_btn_select">
+
+												<!-- <button  onclick="change_flexSwitch_true('t1')" class="btn btn-primary "
 													type="button">All</button>
-												<button onclick="change_flexSwitch_false('t1')" class="btn btn-primary me-md-2"
-													type="button">None</button>
+												<button  onclick="change_flexSwitch_false('t1')" class="btn btn-primary"
+													type="button">None</button> -->
+
 											</div>
 
 
@@ -205,7 +207,7 @@
 													<!-- Buscador de Alertas -->
 													<div class="col-auto">
 														<div class="input-group mb-4 ">
-															<input value="1116263685-0" id="txtUsersap002" type="text" class="form-control"
+															<input onkeyup="changeText('t2')" value="1116263685-0" id="txtUsersap002" type="text" class="form-control"
 																placeholder="Recipient's username" aria-label="Recipient's username"
 																aria-describedby="button-addon2">
 															<button onclick="getAlertUser(txtUsersap002.value,'tabla2')"
@@ -215,18 +217,20 @@
 													</div>
 													<div class="col-auto">
 														<button id="btn-quitarAlertas" disabled
-															onclick="alertDelete('flexSwitchCheckChecked_','t2')" type="button"
-															class="btn btn-danger">Quitar
-															Alertas</button>
+															onclick="alertDelete('flexSwitchCheckChecked_','t2')" type="button" class="btn btn-danger">
+															Quitar Alertas
+														</button>
 													</div>
 												</div>
 											</div>
 
-											<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-												<button onclick="change_flexSwitch_true('t2')" class="btn btn-primary"
+											<div class="d-grid gap-2 d-md-flex justify-content-md-end" id="div_btn_select1" >
+
+												<!-- <button onclick="change_flexSwitch_true('t2')" class="btn btn-primary"
 													type="button">All</button>
-												<button onclick="change_flexSwitch_false('t2')" class="btn btn-primary me-md-2"
-													type="button">None</button>
+												<button onclick="change_flexSwitch_false('t2')" class="btn btn-primary"
+													type="button">None</button> -->
+
 											</div>
 
 											<!-- Cuerpo de la tarjeta -->
@@ -432,9 +436,9 @@
 
 													</div>
 													<div class="col-3">
-														<button type="button" class="btn btn-danger">Quitar
+														<button type="button" class="btn btn-danger">
+															Quitar 
 															Alertas</button>
-
 													</div>
 												</div>
 											</div>
