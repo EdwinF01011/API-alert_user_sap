@@ -210,7 +210,7 @@ return new bootstrap.Toast(liveToastErr, {animation:true,autohide:true ,delay:50
 
 function showToast_N() {//https://getbootstrap.com/docs/5.0/components/toasts/
 	return new bootstrap.Toast(liveToastNothing, {animation:true,autohide:true ,delay:5000}).show();
-	}
+}
 
 function imprimir(id) {
     
