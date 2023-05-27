@@ -261,12 +261,12 @@ function getCodeAlerts(switchCh,table) {//obtener el código de las alertas sele
 	
 	if(table == 't1'){
 		for (let i = 0; i < alerts_total; i++) {
-        // var rowCheck = document.getElementById("flexSwitchCheckChecked"+i).checked;
-        var rowCheck = document.getElementById(switchCh+i).checked;
-		if (rowCheck == true) {
-			var x = document.getElementById("fila" + i).getElementsByTagName("td");
-			// console.log(x[2].innerHTML);
-			alerts_user.push(x[2].innerHTML);
+			// var rowCheck = document.getElementById("flexSwitchCheckChecked"+i).checked;
+			var rowCheck = document.getElementById(switchCh+i).checked;
+			if (rowCheck == true) {
+				var x = document.getElementById("fila" + i).getElementsByTagName("td");
+				// console.log(x[2].innerHTML);
+				alerts_user.push(x[2].innerHTML);
 		}
 	}
 	}else{
@@ -318,14 +318,7 @@ function change_flexSwitch_false(table) {
 
 function changeText(table) {
 
-	// if(document.getElementById("txtUsersap001").value != '' || document.getElementById("txtUsersap002").value != ''){
-	// 	document.getElementById('btn-tranferirAlertas').disabled = true;//habilita el botón de transferir
-	// 	document.getElementById('btn-asignar-alerta-center').disabled = true;//habilita el botón de transferir
-	// 	alert('changeText');
-	// }
 
-	
-	
 	if(table == 't1'){
 		let div_btn_select = document.getElementById('div_btn_select');//div de botónes de seleccionar todos
 		div_btn_select.innerHTML = '';//oculta el div de botónes de seleccionar todos
@@ -378,6 +371,98 @@ function change_flexSwitchCheckChecked(table) {
 	}
 }
 
+const change_color_row = () => {
+	
+	// // var fila = document.getElementById("fila_1");
+	
+	// // fila.style.backgroundColor = "#FF0000";
+	// // fila.style.backgroundColor = "rgba(245, 22, 22, 0.979)";
+	// // document.getElementById("flexSwitchCheckChecked_1").checked = false//cambia el estado del switch
+
+	// let arrayRows = [];
+
+	// for (let i = 0; i < alerts_total2; i++) {
+
+	// 	var rowFila_= document.getElementById("fila_" + i).getElementsByTagName("td");
+	// 	var numerFila_= rowFila_[2].innerHTML;
+
+	// 	console.log(numerFila_);
+		
+	// 	// for (let ii = 0; ii < alerts_total; ii++) {
+			
+	// 	// 	var rowFila = document.getElementById("fila" + ii).getElementsByTagName("td");
+	// 	// 	var numerFila= rowFila[2];
+
+	// 	// 	if (true) {
+	// 	// 		// arranumerFila_
+
+	// 	// 		console.log(numerFila_ + ' == ' + numerFila);
+
+	// 	// 	}
+
+
+			
+	// 	// }
+
+
+	// 	// row.style.backgroundColor = "rgba(245, 22, 22, 0.979)";
+	// 	// document.getElementById("flexSwitchCheckChecked_"+i).checked = false//cambia el estado del switch
+	// }
+	
+
+	//-----------------------------------------------------------------------
+
+	alerts_user=[];
+	alerts_user2=[];
+
+	// getCodeAlerts('flexSwitchCheckChecked','t1');
+	// getCodeAlerts('flexSwitchCheckChecked_','t2');
+
+	// console.log(alerts_user);
+	// console.log(alerts_user2);
+
+	var a=[];
+	var b=[];
+	for (let i = 0; i < alerts_total; i++) {
+
+		var x = document.getElementById("fila" + i).getElementsByTagName("td");
+
+		a.push(x[2].innerHTML);
+		// console.log(a);
+
+		for (let ii = 0; ii < alerts_total2; ii++) {
+
+			var y = document.getElementById("fila_" + ii).getElementsByTagName("td");
+
+
+			b.push(x[2].innerHTML);
+
+			// console.log(b);
+
+
+			if (x[2].innerHTML == y[2].innerHTML) {
+				// console.log(x[2].innerHTML + ' == ' + y[2].innerHTML);
+
+				// const color = "rgba(255, 234, 7, 0.979)";
+				var fila = document.getElementById("fila"+i);
+				var fila2 = document.getElementById("fila_"+ii);
+
+				fila.style.backgroundColor = "rgba(255, 234, 7, 0.979)";
+				fila2.style.backgroundColor = "rgba(255, 234, 7, 0.979)";
+
+				document.getElementById("flexSwitchCheckChecked"+i).checked = false//cambia el estado del switch
+			}
+			
+			
+		}
+		
+	}
+
+
+	alerts_user=[];
+	alerts_user2=[];
+	
+}
 
 
 
