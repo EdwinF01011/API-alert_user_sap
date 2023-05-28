@@ -6,6 +6,8 @@ let alerts_user = [];
 let alerts_user2 = [];
 let alerts_total = 0;
 let alerts_total2 = 0;
+let bandera = false;
+let bandera2 = false;
 
 const btn_select= '<button  onclick="change_flexSwitch_true('+"'t1'"+')" class="btn btn-primary " '+
 				'type="button">All</button>'+
@@ -36,11 +38,14 @@ function getAlertUser(txtUsersap,table) {
 			var tbody = document.getElementById(table);//obtenemos el cuerpo de la tabla
 
 			if (table == 'tabla1' && data.message.length > 0) {
-
+				
+				bandera = true;
 				document.getElementById('btn-tranferirAlertas').disabled = false;//habilita el botón de transferir
 				document.getElementById('btn-asignar-alerta-center').disabled = false;//habilita el botón de transferir
 				document.getElementById('div_btn_select').innerHTML = btn_select;//habilita el botón de transferir
-
+				if(bandera == true && bandera2 == true){
+					document.getElementById('btn-comparar').disabled = false;
+				}
 				
 				// -----------------Tabla-----------------
 				let str = '';//creamos una variable para concatenar los datos
@@ -67,8 +72,13 @@ function getAlertUser(txtUsersap,table) {
 				showToast_G();
 			} else if(table == 'tabla2' && data.message.length > 0){
 
+				bandera2 = true;
 				document.getElementById('btn-quitarAlertas').disabled = false;
 				document.getElementById('div_btn_select1').innerHTML = btn_select1;
+				if(bandera == true && bandera2 == true){
+					document.getElementById('btn-comparar').disabled = false;
+				}
+
 
 				alerts_total2 = data.message.length;
 				// -----------------Tabla-----------------
@@ -318,21 +328,30 @@ function change_flexSwitch_false(table) {
 
 function changeText(table) {
 
-
 	if(table == 't1'){
 		let div_btn_select = document.getElementById('div_btn_select');//div de botónes de seleccionar todos
 		div_btn_select.innerHTML = '';//oculta el div de botónes de seleccionar todos
 		document.getElementById('btn-tranferirAlertas').disabled = true;//deshabilita el botón de transferir
 		document.getElementById('btn-asignar-alerta-center').disabled = true;//deshabilita el botón de transferir
+		document.getElementById('btn-comparar').disabled = true;
+		
 		change_flexSwitch_false('t1')
 		alerts_total=0;
+		bandera=false;
+
 		
 	}else{
 		let div_btn_select1 = document.getElementById('div_btn_select1');//div de botónes de seleccionar todos
 		div_btn_select1.innerHTML = '';//oculta el div de botónes de seleccionar todos
 		document.getElementById('btn-quitarAlertas').disabled = true;
+		document.getElementById('btn-comparar').disabled = true;
+
 		change_flexSwitch_false('t2')
 		alerts_total2=0;
+		bandera2=false;
+
+
+
 	}
 }
 
