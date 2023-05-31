@@ -28,11 +28,11 @@ const fetch = (...args) => fetchP.then(fn => fn(...args))
 
 //  #CREDENCIALS SAP
 
-// var login = {
-//     "CompanyDB": "PRUEBAS_ENERO",
-//     "Password": "Milan2023*",
-//     "UserName": "1005331526"
-// }
+var login = {
+    "CompanyDB": "PRUEBAS_ENERO",
+    "Password": "Milan2023*",
+    "UserName": "1005331526"
+}
 
 //  #TLS
 //https://stackoverflow.com/questions/52478069/node-fetch-disable-ssl-verification
