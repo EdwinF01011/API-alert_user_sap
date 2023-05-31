@@ -187,9 +187,9 @@ function dateFuture(){// retorna la fecha con 1 hora adelantada
 
 function getAlert(options,cedula1) {
     return  new Promise((resolve, reject) => {
-
-        var url = "https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLalertUser')/List?cedula='"+cedula1+"'";
-        // var url ="https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLQueries0001')/List?cedula='"+cedula1+"'"; // <- usuario a tomar alertas 'MILANPROD'
+        
+        // var url = "https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLalertUser')/List?cedula='"+cedula1+"'";
+        var url ="https://192.168.10.201:50000/b1s/v1/SQLQueries('SQLQueries0001')/List?cedula='"+cedula1+"'"; // <- usuario a tomar alertas 'MILANPROD'
 
         fetch(url,options)
             .then((resp) => {
@@ -345,7 +345,6 @@ async function createJson(session){
     // });
 }
 
-
 async function createJson2(options){
 
     console.log('1.2')
@@ -372,15 +371,12 @@ async function createJson2(options){
     })
 }
 
-function getsetAlertUser() {
-    console.log("getsetAlertUser");
-}
-
 //      #ROUTES        --------------------
 
 app.get("/", (req,res)=>{
     // res.sendFile(path.resolve(__dirname,'./views/index.html'));
     res.sendFile(path.join(__dirname,'./public/index.html'));
+    // res.send('heee');
 })
 
 app.get("/alert",  (req, res0) => {
@@ -800,8 +796,12 @@ app.post("/new",  (req, res0) => {
     }).catch((err) => { console.log(err) })
 });
 
-app.get("/new2",  (req, res0) => {
-
+app.post("/new2",  (req, res0) => {
+    let data = req.body;
+    console.log(data);
+    var txtUsersap001=data.txtUsersap001;
+    var txtUsersap002=data.txtUsersap002;
+    var alerts_user = data.alerts_user;
     var options = {
         method: 'GET',
         headers: {
@@ -811,50 +811,51 @@ app.get("/new2",  (req, res0) => {
         }
         , agent: httpsAgent
     }
-    
-    // //----------------------------------
-    // //----------------------------------
-    
-    var x;
+
     Reqlogin().then((resp) => {
-        sesion.timeFuture = dateFuture();
+        // sesion.timeFuture = dateFuture();
         sesion.cookieId = "B1SESSION=" + resp.SessionId;
         options.headers.cookie = sesion.cookieId;
+        
+        getUserid_sap(txtUsersap002,options).then((res3) => {
+            console.log('1.4 user id')
+            var userid=res3.value[0]['USERID'];
 
-        // createJson(sesion);//comentado, porque retrasa el tiempo de respuesta y no cargan los demás métodos
-        // createJson2(sesion);
-        getAlert2(options,'1005331526').then((res2) => {
-
-            alertas = res2.value;
-            // console.log(alertas);
-
-            for (var i in alertas) {
-
-                
-                var url= "https://192.168.10.201:50000/b1s/v1/AlertManagements?$select=Name &$filter=(QueryID eq "+ alertas[i]['Code']+")";
-                // var url= "https://192.168.10.201:50000/b1s/v1/AlertManagements?$select=Name &$filter=(QueryID eq 723)";
-                // console.log(url);
-                fetch(url,options).then(resp1 => resp1.json())
-                .then((data) => {
-                    x=data.value;
-                    // resp=resp1.json()
-                    // alerts.Code.push(alertas[i]['Code'])
-                    alerts.Name.push(data['Name'])
-                    // alerts.Code =alertas[i]['Code'];
-                    // alerts.Name =data['Name'];
-                    console.log(x);
-                    // console.log(data['Name']);
-                }).catch(err => {
-                    console.log(err)
-                    // return reject(err)
+            let opt = {
+                method: 'PATCH',
+                headers: {
+                    cookie:sesion.cookieId,
+                    "Content-Type": "application/json"
+                }
+                , agent: httpsAgent
+                , body: JSON.stringify({
+                    "AlertManagementRecipients": [
+                        {
+                            "UserCode": userid,
+                            "SendInternal": "tYES"
+                        }
+                    ]
                 })
             }
-            res0.json(x);
-        }).catch(err => {
-            alertas = err;
-            console.log(err)
-        });
+            alerts_user.forEach(element => {
+                // var alertCode= element['Code'];
+
+                var alertCode= element;
+                // console.log(alertCode);
+                setAlertUser(opt,alertCode)
+                .then((res4) => {
+                    // console.log(res4.message + alertCode)//error
+                }).catch((err)=>{
+                    console.error(err);
+                    return err;
+                });  
+            }); 
+        }).catch((err) => { console.log(err) })
+        res0.json({message:true})
+
     }).catch((err) => { console.log(err) })
+
+
 });
 
 
@@ -865,14 +866,7 @@ app.get("/new2",  (req, res0) => {
 //     txtUsersap002:''
 // }
 
-app.post("/api/getValueHtml",(req,res)=>{
-    // console.log(req.body)
-    // let data = req.body;
-    // valuesElement_index.txtUsersap001=data.txtUsersap001;
-    // valuesElement_index.txtUsersap002=data.txtUsersap002;
 
-    // res.json({message: 'Prueba correcta'})
-})
 
 
 

@@ -33,6 +33,10 @@
 //     // console.log(lg.param.cedula2);
 // }
 
+
+var alert_total = 0;
+
+
 function alertDelete() {
     let alert_ok = document.getElementById("alert-ok");
     let alert_err = document.getElementById("alert-err");
@@ -168,17 +172,23 @@ function getAlertUser(txtUsersap,table){
             if (table=='tabla1') {
                 // -----------------Tabla-----------------
                 let str = '';//creamos una variable para concatenar los datos
+                alert_total= data.message.length;
+
                 for(var i = 0; i < data.message.length; i++){//recorremos el arreglo de datos
-                    str += '<tr>'
+                    
+                    str += '<tr id="fila'+i+'">'
                                 // +'<th>&nbsp;<p>   </p></th>'
-                                +'<td>'+data.message[i]['Code']+'</td>'
+                                +'<td>'+i+'</td>'
                                 +'<td>'+data.message[i]['Name']+'</td>'
+                                +'<td>'+data.message[i]['Code']+'</td>'
                                 // +'<td>'+data.message[i]['UserSign']+'</td>'
                                 +'<td class="form-check form-switch">'+
-                                    '<input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>'+
-                                    '<label class="form-check-label" for="flexSwitchCheckChecked">Habilitado</label>'+
+                                    '<input onchange="imprimir('+i+')" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked'+i+'" checked>'+
+                                    '<label class="form-check-label" for="flexSwitchCheckChecked">➡️</label>'+
                                 '</td>'+
                             '</tr>';//concatenamos cada dato en la variable str
+                    // alert_total=data.message[i]['id__'];
+                    
                 }
                 tbody.innerHTML = str;//agregamos la variable str al cuerpo de la tabla
             }else{
@@ -219,10 +229,9 @@ function getSearchResults(event, x){
             let str = '';//creamos una variable para concatenar los datos
             for(var i = 0; i < data.message.length; i++){//recorremos el arreglo de datos
                 str += '<tr>'
-                            // +'<th>&nbsp;<p>   </p></th>'
                             +'<td>'+data.message[i]['Code']+'</td>'
                             +'<td>'+data.message[i]['Name']+'</td>'
-                            // +'<td>'+data.message[i]['UserSign']+'</td>'
+                            +'<td>'+data.message[i]['UserSign']+'</td>'
                             +'<td class="form-check form-switch">'+
                                 '<input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>'+
                                 '<label class="form-check-label" for="flexSwitchCheckChecked">Habilitado</label>'+
@@ -271,6 +280,51 @@ function getSearchResults2(event, x){
 //     console.log("keyup event, keyValue: " + keyValue);
 //     console.log("keyup event, codeValue: " + codeValue);
 // }, false);
+
+function getElementTable() {
+    
+    let getFila = document.getElementsByTagName("5");
+
+    let getData = document.getElementsByTagName("td");
+    // let getData = document.getElementsByTagName("tr");
+    // console.log(getFila );
+
+    
+    
+    
+    for (let i = 0; i < alert_total; i++) {
+        // const element = array[i];
+
+        
+        // var x = getData[i].getElementsByTagName("td");
+        var x = getData[i];
+
+        var flex = document.getElementById("flexSwitchCheckChecked"+i).checked;
+        // flex.addEventListener("click", function(e) {
+        //     e.value
+        // });
+
+        if(flex == true){
+            // alert('is check');
+            console.log(i+'true');
+        }
+
+        // alert(x)
+    }
+    // alert(alert_total);
+
+}
+
+function imprimir(id) {
+    
+    var flex = document.getElementById("flexSwitchCheckChecked").checked;
+
+    // flex.addEventListener("click", function(e) {
+    //     e.value
+    // });
+
+    console.log(flex);
+}
 
 
 function genera_tabla() {
